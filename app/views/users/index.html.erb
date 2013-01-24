@@ -1,0 +1,51 @@
+<h1>Listing users</h1>
+
+<table>
+  <tr>
+    <th>Email</th>
+    <th>Nick name</th>
+    <th>Password</th>
+    <th>Brief introduction</th>
+    <th>Status</th>
+    <th>Access token</th>
+    <th>Token updated at</th>
+    <th>Following count</th>
+    <th>Follower count</th>
+    <th>Group count</th>
+    <th>Sign in count</th>
+    <th>Current sign in at</th>
+    <th>Current sign in ip</th>
+    <th>Last sign in at</th>
+    <th>Last sign in ip</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.email %></td>
+    <td><%= user.nick_name %></td>
+    <td><%= user.password %></td>
+    <td><%= user.brief_introduction %></td>
+    <td><%= user.status %></td>
+    <td><%= user.access_token %></td>
+    <td><%= user.token_updated_at %></td>
+    <td><%= user.following_count %></td>
+    <td><%= user.follower_count %></td>
+    <td><%= user.group_count %></td>
+    <td><%= user.sign_in_count %></td>
+    <td><%= user.current_sign_in_at %></td>
+    <td><%= user.current_sign_in_ip %></td>
+    <td><%= user.last_sign_in_at %></td>
+    <td><%= user.last_sign_in_ip %></td>
+    <td><%= link_to 'Show', user %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+    <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New User', new_user_path %>

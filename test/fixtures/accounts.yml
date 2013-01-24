@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  sum: 1.5
+  io_type: 1
+  owner_type: MyString
+  owner_id: 1
+  budget_type: MyString
+  budget_id: 1
+  remark: MyText
+
+two:
+  sum: 1.5
+  io_type: 1
+  owner_type: MyString
+  owner_id: 1
+  budget_type: MyString
+  budget_id: 1
+  remark: MyText
