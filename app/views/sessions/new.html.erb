@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Free HTML5 Bootstrap Admin Template</title>
+	<title>Wolf/Login_in</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
 	<meta name="author" content="Muhammad Usman">
@@ -16,7 +16,10 @@
 		padding: 9px 0;
 	  }
 	</style>
-		
+	  <%= stylesheet_link_tag "application/application", :media => "all" %>
+	  <%= javascript_include_tag "application/application" %>
+	  <%= csrf_meta_tags %>
+
 </head>
 
 <body>
@@ -25,15 +28,33 @@
 		
 			<div class="row-fluid">
 				<div class="span12 center login-header">
-					<h2>Welcome to Charisma</h2>
+					<h2>Welcome to WolfHowl</h2>
 				</div><!--/span-->
 			</div><!--/row-->
 			
 			<div class="row-fluid">
 				<div class="well span5 center login-box">
 					<div class="alert alert-info">
+						<%= flash[:notice] %>
 						Please login with your Username and Password.
 					</div>
+
+<%= form_for(@user, :url =>"/sessions" ) do |f| %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </div>
+  <div class="actions">
+    <%= f.submit "登录", :class => "btn btn-primary"%>
+  </div>
+<% end %>
+
+
 					<form class="form-horizontal" action="index.html" method="post">
 						<fieldset>
 							<div class="input-prepend" title="Username" data-rel="tooltip">

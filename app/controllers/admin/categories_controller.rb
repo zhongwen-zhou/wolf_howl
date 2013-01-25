@@ -40,7 +40,7 @@ class Admin::CategoriesController < Admin::ApplicationController
   # POST /categories
   # POST /categories.json
   def create
-    @category = Category.new(params[:category])
+    @category = Category.new(params[:category].merge({:user_id => @current_user.id }))
 
     respond_to do |format|
       if @category.save
