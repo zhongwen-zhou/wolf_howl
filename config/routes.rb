@@ -1,19 +1,31 @@
 WolfHowl::Application.routes.draw do
 
-  resources :accounts
+  resources :sessions
 
+  resources :accounts
 
   resources :group_users
 
-
   resources :categories
-
 
   resources :groups
 
-
   resources :users
 
+
+  namespace :admin do
+    resources :accounts
+
+    resources :group_users
+
+    resources :categories
+
+    resources :groups
+
+    resources :users
+
+    resources :sessions
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
