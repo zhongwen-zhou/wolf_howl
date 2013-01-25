@@ -1,35 +1,33 @@
-<h1>Listing groups</h1>
+<h1>所有圈子</h1>
 
 <table>
   <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Level</th>
-    <th>Status</th>
-    <th>Following count</th>
-    <th>Member count</th>
-    <th>User</th>
+      <th>圈子名</th>
+      <th>圈子描述</th>
+      <th>圈子等级</th>
+      <th>成员数</th>
+      <th>粉丝数</th>
+      <th>圈子状态</th>
+      <th>创建用户</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
 
 <% @groups.each do |group| %>
-  <tr>
+<tr>
     <td><%= group.name %></td>
     <td><%= group.description %></td>
-    <td><%= group.level %></td>
-    <td><%= group.status %></td>
-    <td><%= group.following_count %></td>
-    <td><%= group.member_count %></td>
-    <td><%= group.user_id %></td>
-    <td><%= link_to 'Show', group %></td>
-    <td><%= link_to 'Edit', edit_group_path(group) %></td>
-    <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td class="center"><%= group.level %></td>
+    <td class="center"><%= group.member_count %></td>
+    <td class="center"><%= group.following_count %></td>
+    <td class="center"><%= group.status %></td>
+    <td class="center"><%= group.user.nick_name %></td>
+    <td><%= link_to '加入这个圈子', group %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Group', new_group_path %>
+<%= link_to '创建我的圈子', new_group_path %>

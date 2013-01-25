@@ -20,4 +20,9 @@ class SessionsController < ApplicationController
   		return render :action => :new, :notice => "用户名或密码错误！"
   	end
   end
+
+  def destroy
+    session[:current_user_id] = nil
+    return redirect_to root_path
+  end
 end

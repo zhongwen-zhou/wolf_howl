@@ -4,6 +4,8 @@ class GroupsController < ApplicationController
   def index
     @groups = Group.all
 
+    @my_groups = @current_user.groups
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @groups }

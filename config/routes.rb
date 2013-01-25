@@ -1,6 +1,6 @@
 WolfHowl::Application.routes.draw do
 
-  resources :sessions
+  resource :sessions
 
   resources :accounts
 
@@ -24,7 +24,7 @@ WolfHowl::Application.routes.draw do
 
     resources :users
 
-    resources :sessions
+    resource :sessions
   end
 
   # The priority is based upon order of creation:
