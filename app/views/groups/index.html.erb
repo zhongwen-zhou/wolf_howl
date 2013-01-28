@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="bs-docs-social-buttons">
       <li>
-        <%= link_to '创建我的圈子', new_group_path %>
+        <%= link_to '创建我的圈子', new_user_group_path(@current_user) %>
       </li>
       <li>
         Show
@@ -40,21 +40,43 @@
 
               <div class="tab-content">
                 <div class="tab-pane active" id="activities_<%= group.id %>">
-                  <%= link_to("没有活动，发起一个让大家来参与吧！", new_activity_path) if group.activities.empty? %>
-                  <% group.activities.each do |active| %>
-                    <div>
-                      <%= active.subject %> / <%= link_to active.user.nick_name, user_path(active.user) %> / <%= active.start_date.strftime("%Y-%m-%d") %> -- <%= active.end_date.strftime("%Y-%m-%d") %>
-                    </div>
-                  <% end %>
-                  <% if @current_user.is_admin_group?(group) %>
-                    <%= link_to "发起活动", new_activity_path(:group_id => group.id) %>
+                  <% if group.activities.empty? %>
+                    <%= link_to "没有活动，发起一个让大家来参与吧！", new_group_activity_path(group) %>
+                  <% else %>
+                    <% group.activities.each do |active| %>
+                      <div>
+                        <%= active.subject %> / <%= link_to active.user.nick_name, user_path(active.user) %> / <%= active.start_date.strftime("%Y-%m-%d") %> -- <%= active.end_date.strftime("%Y-%m-%d") %>
+                        <%= link_to( " / 创建预算", new_group_activity_budget_path(group,active)) if @current_user.is_admin_group?(group) %>
+                        <%= link_to(" / 添加帐务",new_group_activity_account_path(group,active)) if @current_user.is_admin_group?(group) %>
+                        <%= link_to(" / 参见活动",group_activity_activity_users_path(group,active), :method => :post) %>
+                      </div>
+                    <% end %>
+                    <% if @current_user.is_admin_group?(group) %>
+                      <%= link_to "发起活动", new_group_activity_path(group) %>
+                    <% end %>
                   <% end %>
                 </div>
-                <div class="tab-pane" id="budgets_<%= group.id %>">This Budget</div>
+                <div class="tab-pane" id="budgets_<%= group.id %>">
+                  <% if group.budgets.empty? %>
+                    <%= link_to "还没有预算的，策划一个新预算！", new_group_budget_path(group) %>
+                  <% else %>
+                    <% group.budgets.each do |budget| %>
+
+                    <% end %>
+                    <% if @current_user.is_admin_group?(group) %>
+                      <%= link_to "策划一个新预算！", new_group_budget_path(group) %>
+                    <% end %>
+                  <% end %>
+                </div>
                 <div class="tab-pane" id="accounts_<%= group.id %>">
-                  <%= link_to("做好帐哦，来记一个吧！", new_account_path ) if group.activities.empty? %>
-                  <% if @current_user.is_admin_group?(group) %>
-                    <%= link_to "记个账先！", new_account_path(:group_id => group.id) %>
+                  <% if group.accounts.empty? %>
+                  <%= link_to "做好帐哦，来记一个吧！", new_group_account_path(group) %>
+                  <% else %>
+                    <% group.accounts.each do |account| %>
+                    <% end %>
+                    <% if @current_user.is_admin_group?(group) %>
+                      <%= link_to "记个账先！", new_group_account_path(group) %>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
@@ -63,12 +85,12 @@
         <div class="span3">
           <% unless @current_user.is_create_group?(group) %> 
             <% if @current_user.joined_group?(group) %>
-              <%= link_to '退出这个圈子!', "/groups/#{group.id}/group_users/#{@current_user.joined_group(group).id}", :method => :delete %>
+              <%= link_to '退出这个圈子!', "/groups/#{group.id}/group_users/#{@current_user.joined_group(group).id}", :method => :delete, data: { confirm: '你确定退出这个圈子么？' } %>
             <% else %>
               <%= link_to '喜欢？加入这个圈子!', "/groups/#{group.id}/group_users", :method => :post %>
             <% end %>
           <% else %>
-              <%= link_to '编辑我的圈子', edit_group_path(group) %>
+              <%= link_to '编辑我的圈子', edit_group_path(group) %> / <%= link_to "删除这个圈子？", group, :method => :delete, data: { confirm: '你确定删除这个圈子么？' } %>
           <% end %>
           <br/>
           该小组的成员

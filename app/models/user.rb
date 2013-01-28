@@ -7,8 +7,12 @@ class User < ActiveRecord::Base
   validates :email, :uniqueness => { :message => "该邮箱号码已注册，请重新输入！" }
   validates :nick_name, :uniqueness => { :message => "该昵称已注册，请重新输入！" }
   has_many :groups
-  has_many :accounts, :as => :owner
-  has_many :activities, :as => :owner
+  has_many :accounts, :as => :owner, :dependent => :destroy
+  has_many :activities, :as => :owner, :dependent => :destroy
+  has_many :budgets, :as => :owner, :dependent => :destroy
+
+
+  ADMIN_PERMISSION = 99
 
   def authorize_user
   	db_user = User.where(:email => self.email).first
@@ -16,11 +20,17 @@ class User < ActiveRecord::Base
   	return db_user if db_user.password == self.password
   end
 
-  def join_group(group, invite = nil)
+  def join_group(group, invite = nil, is_admin = false)
   	User.transaction do
-  		group_user = GroupUser.create({:user_id => self.id, :group_id => group.id, :invitees_id => invite})
+  		group_user = GroupUser.create({:user_id => self.id, :group_id => group.id, :invitees_id => invite, :is_admin => is_admin})
   		group.increment!(:member_count)
   	end
+  end
+
+  def join_activity(activity, invite = nil, is_admin = false)
+    User.transaction do
+      activity_user = ActivityUser.create({:user_id => self.id, :activity_id => activity.id, :invitees_id => invite, :is_admin => is_admin})
+    end
   end
 
   def quit_group(group)
@@ -57,11 +67,23 @@ class User < ActiveRecord::Base
   end
 
   def create_activity(params)
-    activity = self.activities.create(params)
+    User.transaction do
+      activity = self.activities.create(params)
+      join_activity(activity,nil,true)
+      return activity
+    end
+  end
+
+  def create_group(params)
+    User.transaction do
+      group = self.groups.create(params)
+      self.join_group(group,nil,true)
+      return group
+    end
   end
 
   def is_admin_group?(group)
-    return true if group.user_id == self.id
+    # return true if group.user_id == self.id
     joined_group(group).is_admin if joined_group(group).present?
   end
 
@@ -87,5 +109,9 @@ class User < ActiveRecord::Base
       self.save
     end
     return self.access_token    
+  end
+
+  def is_admin?
+    self.permission == ADMIN_PERMISSION
   end
 end

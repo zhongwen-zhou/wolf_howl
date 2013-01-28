@@ -24,6 +24,7 @@ class ActivitiesController < ApplicationController
   # GET /activities/new
   # GET /activities/new.json
   def new
+    @group = Group.find(params[:group_id])
     @activity = Activity.new
     @group_id = params[:group_id]
     respond_to do |format|
@@ -49,7 +50,7 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       if @activity.errors.empty?
-        format.html { redirect_to @activity, notice: 'Activity was successfully created.' }
+        format.html { redirect_to groups_path, notice: 'Activity was successfully created.' }
         format.json { render json: @activity, status: :created, location: @activity }
       else
         format.html { render action: "new" }

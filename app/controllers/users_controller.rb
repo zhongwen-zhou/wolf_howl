@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_filter :current_user, :only => [:new, :create]
   skip_filter :authorize_login, :only => [:new, :create]
   # GET /users
   # GET /users.json

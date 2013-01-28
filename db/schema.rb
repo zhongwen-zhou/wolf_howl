@@ -11,19 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130126132455) do
+ActiveRecord::Schema.define(:version => 20130128090421) do
 
   create_table "accounts", :force => true do |t|
-    t.float    "sum"
+    t.float    "sum",                           :null => false
     t.integer  "io_type"
     t.string   "owner_type"
     t.integer  "owner_id"
-    t.string   "budget_type"
-    t.integer  "budget_id"
+    t.string   "genre_type"
+    t.integer  "genre_id"
     t.text     "remark"
     t.integer  "visable_status", :default => 0, :null => false
-    t.integer  "user_id"
-    t.integer  "activity_id"
+    t.integer  "user_id",                       :null => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
@@ -43,21 +42,50 @@ ActiveRecord::Schema.define(:version => 20130126132455) do
     t.datetime "updated_at",                    :null => false
   end
 
+  create_table "activity_users", :force => true do |t|
+    t.integer  "activity_id",                :null => false
+    t.integer  "user_id",                    :null => false
+    t.integer  "invitees_id"
+    t.boolean  "is_admin"
+    t.integer  "status",      :default => 0, :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  create_table "budgets", :force => true do |t|
+    t.string   "name",                          :null => false
+    t.text     "description"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "visable_status"
+    t.integer  "status",         :default => 0, :null => false
+    t.float    "total_sum"
+    t.float    "balance_sum"
+    t.integer  "genre_id"
+    t.string   "genre_type"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.integer  "user_id",                       :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
   create_table "categories", :force => true do |t|
-    t.string   "name"
+    t.string   "name",                       :null => false
     t.text     "description"
     t.integer  "level",       :default => 0
-    t.integer  "status",      :default => 0
+    t.integer  "status",      :default => 0, :null => false
     t.integer  "postion",     :default => 0
+    t.integer  "max_postion"
     t.integer  "parent_id"
-    t.integer  "user_id"
+    t.integer  "user_id",                    :null => false
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end
 
   create_table "group_users", :force => true do |t|
-    t.integer  "group_id"
-    t.integer  "user_id"
+    t.integer  "group_id",                       :null => false
+    t.integer  "user_id",                        :null => false
     t.integer  "invitees_id"
     t.boolean  "is_follow",   :default => false
     t.boolean  "is_admin",    :default => false
@@ -66,13 +94,13 @@ ActiveRecord::Schema.define(:version => 20130126132455) do
   end
 
   create_table "groups", :force => true do |t|
-    t.string   "name"
+    t.string   "name",                           :null => false
     t.text     "description"
     t.integer  "level",           :default => 1
-    t.integer  "status",          :default => 0
+    t.integer  "status",          :default => 0, :null => false
     t.integer  "following_count", :default => 0
     t.integer  "member_count",    :default => 0
-    t.integer  "user_id"
+    t.integer  "user_id",                        :null => false
     t.integer  "visable_status",  :default => 0, :null => false
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false

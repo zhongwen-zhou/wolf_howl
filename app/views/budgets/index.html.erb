@@ -1,0 +1,47 @@
+<h1>Listing budgets</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th>Visable status</th>
+    <th>Status</th>
+    <th>Total sum</th>
+    <th>Balance sum</th>
+    <th>Genre</th>
+    <th>Genre type</th>
+    <th>Owner</th>
+    <th>Owner type</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @budgets.each do |budget| %>
+  <tr>
+    <td><%= budget.name %></td>
+    <td><%= budget.description %></td>
+    <td><%= budget.start_date %></td>
+    <td><%= budget.end_date %></td>
+    <td><%= budget.visable_status %></td>
+    <td><%= budget.status %></td>
+    <td><%= budget.total_sum %></td>
+    <td><%= budget.balance_sum %></td>
+    <td><%= budget.genre_id %></td>
+    <td><%= budget.genre_type %></td>
+    <td><%= budget.owner_id %></td>
+    <td><%= budget.owner_type %></td>
+    <td><%= budget.user_id %></td>
+    <td><%= link_to 'Show', budget %></td>
+    <td><%= link_to 'Edit', edit_budget_path(budget) %></td>
+    <td><%= link_to 'Destroy', budget, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Budget', new_budget_path %>

@@ -1,27 +1,39 @@
 WolfHowl::Application.routes.draw do
 
-  resources :activities
 
 
-  resource :sessions
-
-  resources :accounts
-
-  resources :categories
-
+  resource :sessions, :only => [:new, :create, :destroy]
+  
   resources :groups do
     member do
       put 'set_admin/:user_id', :action => :set_admin
       put 'canel_admin/:user_id', :action => :canel_admin
     end
-    resources :group_users do
+    resources :group_users, :only => [:create] 
+
+    resources :budgets
+    resources :accounts
+    resources :activities do 
+      resources :activity_users, :only => [:create]
+      resources :budgets
+      resources :accounts
+    end    
+  end
+
+  resources :users do
+    resources :budgets
+    resources :accounts
+    resources :groups
+    resources :activities do 
+      resources :budgets
+      resources :accounts
     end
   end
 
-  resources :users
-
 
   namespace :admin do
+    resources :budgets
+    
     resources :accounts
 
     resources :group_users
