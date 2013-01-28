@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_filter :authorize_login, :only => [:new, :create]
   # GET /users
   # GET /users.json
   def index
@@ -40,11 +41,11 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
-
+    @user = User.create_init(params[:user],request.remote_ip)
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+      unless @user.errors.size > 0
+        session[:current_user_id] = @user.id
+        format.html { redirect_to root_path, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }

@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
-	<title>Free HTML5 Bootstrap Admin Template</title>
+	<title>后台管理</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
 	<meta name="author" content="Muhammad Usman">
@@ -34,7 +34,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="#"> <%= image_tag("charisma/logo20.png") %> <span>Charisma</span></a>
+				<a class="brand" href="/"> <%= image_tag("charisma/logo20.png") %> <span>Wolf_Howl</span></a>
 				
 				<!-- theme selector starts -->
 				<div class="btn-group pull-right theme-container">
@@ -91,9 +91,14 @@
 			<div class="span2 main-menu-span">
 				<div class="well nav-collapse sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li class="nav-header hidden-tablet">Main</li>
-						<li style="margin-left: -7px;" class="active"><a class="ajax-link" href="file:///home/tony/howlspace/charisma/index.html"><i class="icon-home"></i><span class="hidden-tablet"> Dashboard</span></a></li>
-						<li style="margin-left: -2px;"><a class="ajax-link" href="file:///home/tony/howlspace/charisma/ui.html"><i class="icon-eye-open"></i><span class="hidden-tablet"> UI Features</span></a></li>
+						<li class="nav-header hidden-tablet">后台管理</li>
+						<li style="margin-left: -7px;" class="active">
+							<%= link_to "<i class='icon-home'></i><span class='hidden-tablet'> 首页 </span>".html_safe, admin_root_path, :class => "ajax-link" %>
+						</li>
+						<li style="margin-left: -2px;">
+							
+							<%= link_to "<i class='icon-home'></i><span class='hidden-tablet'> 类别管理 </span>".html_safe, admin_categories_path, :class => "ajax-link" %>							
+						</li>
 						<li style="margin-left: -2px;"><a class="ajax-link" href="file:///home/tony/howlspace/charisma/form.html"><i class="icon-edit"></i><span class="hidden-tablet"> Forms</span></a></li>
 						<li style="margin-left: -2px;"><a class="ajax-link" href="file:///home/tony/howlspace/charisma/chart.html"><i class="icon-list-alt"></i><span class="hidden-tablet"> Charts</span></a></li>
 						<li><a class="ajax-link" href="file:///home/tony/howlspace/charisma/typography.html"><i class="icon-font"></i><span class="hidden-tablet"> Typography</span></a></li>

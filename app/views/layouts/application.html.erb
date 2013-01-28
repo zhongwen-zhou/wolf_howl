@@ -35,84 +35,55 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>
+          <a class="brand" href="#">Wolf_Howl</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active">
+              <li class="<%= @active_nav == 'home' ? 'active' : '' %>">
                 <%= link_to "Wolf_Howl", root_path %>
               </li>
-              <li class="">
+              <li class="<%= @active_nav == 'group' ? 'active' : '' %>">
                 <%= link_to "看看圈子", groups_path %>
               </li>
               <li class="">
                 <%= link_to "我的帐务", accounts_path %>
               </li>
               <li class="">
-                <a href="http://twitter.github.com/bootstrap/base-css.html">Base CSS</a>
+                <a href="http://twitter.github.com/bootstrap/base-css.html">看看我们的预算</a>
               </li>
               <li class="">
                 <a href="http://twitter.github.com/bootstrap/components.html">Components</a>
               </li>
-              <li class="">
-                <a href="http://twitter.github.com/bootstrap/javascript.html">JavaScript</a>
-              </li>
-              <li class="">
-                <a href="http://twitter.github.com/bootstrap/customize.html">Customize</a>
-              </li>
             </ul>
           </div>
-          <div>
-            <% if @current_user.present? %>
-              <%= @current_user.nick_name %>/<%= link_to "注销", sessions_path, :method => "delete" %>
-            <% else %>
-              <%= link_to "注册", new_user_path %>/<%= link_to "登录", new_session_path %>
-            <% end %>
+          <div class="offset8">
+            <ul class="nav">
+                <% if @current_user.present? %>
+              <li class="active">
+                  <%= link_to @current_user.nick_name, edit_user_path(@current_user) %>
+              </li>
+              <li class="active">
+                  <%= link_to "注销", sessions_path, :method => "delete" %>
+              </li>
+                <% else %>
+              <li class="active">  
+                  <%= link_to "登录", new_sessions_path %>
+              </li>
+              <li class="active">
+                  <%= link_to "注册", new_user_path %>
+              </li<
+                <% end %>
+            </ul>
           </div>
         </div>
       </div>
     </div>
 
 <div class="jumbotron masthead">
-  <div class="container">
-    <h1>Bootstrap</h1>
-    <p>Sleek, intuitive, and powerful front-end framework for faster and easier web development.</p>
-    <p>
-      <a href="http://twitter.github.com/bootstrap/assets/bootstrap.zip" class="btn btn-primary btn-large" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Download', 'Download 2.2.2']);">Download Bootstrap</a>
-    </p>
-    <ul class="masthead-links">
-      <li>
-        <a href="http://github.com/twitter/bootstrap" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'GitHub project']);">GitHub project</a>
-      </li>
-      <li>
-        <a href="http://twitter.github.com/bootstrap/getting-started.html#examples" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Examples']);">Examples</a>
-      </li>
-      <li>
-        <a href="http://twitter.github.com/bootstrap/extend.html" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Jumbotron links', 'Extend']);">Extend</a>
-      </li>
-      <li>
-        Version 2.2.2
-      </li>
-    </ul>
-  </div>
+  <%= yield :show_div %>
 </div>
 
 <div class="bs-docs-social">
-  <div class="container">
-    <ul class="bs-docs-social-buttons">
-      <li>
-        
-      </li>
-      <li>
-        
-      </li>
-      <li class="follow-btn">
-        
-      </li>
-      <li class="tweet-btn">
-       
-      </li>
-    </ul>
-  </div>
+  <%= yield :operation_bar %>
 </div>
 
 <div class="container">
@@ -125,11 +96,11 @@
     ================================================== -->
     <footer class="footer">
       <div class="container">
-        <p>Designed and built with all the love in the world by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
-        <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <p>Tony设计</p>
+        <p>本项目是开源项目，项目地址是：<a href="https://github.com/zhongwen-zhou/wolf_howl/" target="_blank">https://github.com/zhongwen-zhou/wolf_howl/</a></p>
         <p><a href="http://glyphicons.com/">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
         <ul class="footer-links">
-          <li><a href="http://blog.getbootstrap.com/">Blog</a></li>
+          <li><a href="http://blog.getbootstrap.com/"></a></li>
           <li class="muted">·</li>
           <li><a href="https://github.com/twitter/bootstrap/issues?state=open">Issues</a></li>
           <li class="muted">·</li>

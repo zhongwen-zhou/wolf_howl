@@ -1,4 +1,5 @@
 class GroupUsersController < ApplicationController
+  before_filter :current_group
   # GET /group_users
   # GET /group_users.json
   def index
@@ -24,8 +25,8 @@ class GroupUsersController < ApplicationController
   # GET /group_users/new
   # GET /group_users/new.json
   def new
-    @group_user = GroupUser.new
-
+    @group = Group.new
+    # @group_user = @current_user.join_group(@group)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @group_user }
@@ -40,11 +41,11 @@ class GroupUsersController < ApplicationController
   # POST /group_users
   # POST /group_users.json
   def create
-    @group_user = GroupUser.new(params[:group_user])
-
+    # @group_user = GroupUser.new(params[:group_user])
+    @group_user = @current_user.join_group(@group)
     respond_to do |format|
-      if @group_user.save
-        format.html { redirect_to @group_user, notice: 'Group user was successfully created.' }
+      if @group_user
+        format.html { redirect_to @group, notice: 'Group user was successfully created.' }
         format.json { render json: @group_user, status: :created, location: @group_user }
       else
         format.html { render action: "new" }
@@ -72,12 +73,17 @@ class GroupUsersController < ApplicationController
   # DELETE /group_users/1
   # DELETE /group_users/1.json
   def destroy
-    @group_user = GroupUser.find(params[:id])
-    @group_user.destroy
-
+    @current_user.quit_group(@group)
     respond_to do |format|
-      format.html { redirect_to group_users_url }
+      format.html { redirect_to groups_path }
       format.json { head :no_content }
     end
+  end
+
+
+  private
+  def current_group
+    @group = Group.find(params[:group_id])
+    @group_user = GroupUser.find(params[:id]) if params.has_key?(:id)
   end
 end

@@ -1,33 +1,100 @@
-<h1>所有圈子</h1>
-
-<table>
-  <tr>
-      <th>圈子名</th>
-      <th>圈子描述</th>
-      <th>圈子等级</th>
-      <th>成员数</th>
-      <th>粉丝数</th>
-      <th>圈子状态</th>
-      <th>创建用户</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= content_for :operation_bar do %>
+  <div class="container">
+    <ul class="bs-docs-social-buttons">
+      <li>
+        <%= link_to '创建我的圈子', new_group_path %>
+      </li>
+      <li>
+        Show
+      </li>
+      <li class="follow-btn">
+        
+      </li>
+      <li class="tweet-btn">
+       
+      </li>
+    </ul>
+  </div>
+<% end %>
 
 <% @groups.each do |group| %>
-<tr>
-    <td><%= group.name %></td>
-    <td><%= group.description %></td>
-    <td class="center"><%= group.level %></td>
-    <td class="center"><%= group.member_count %></td>
-    <td class="center"><%= group.following_count %></td>
-    <td class="center"><%= group.status %></td>
-    <td class="center"><%= group.user.nick_name %></td>
-    <td><%= link_to '加入这个圈子', group %></td>
-  </tr>
+<div class="container">
+  <div class="row">
+    <p>
+    <%= group.name %> / <%= link_to group.user.nick_name, user_path(group.user) %> <br/>
+    圈子等级:<%= group.level %>  成员数:<%= group.member_count %>   粉丝数:<%= group.following_count %>
+    </p>
+
+    <div class="span8">
+      <div class="row">
+        <div class="span4">
+          <p>
+            <%= group.description %>
+          </p>
+
+              <ul id="group_tab_<%= group.id %>" class="nav nav-tabs">
+                <li><a href="#activities_<%= group.id %>" data-toggle="tab">活动</a></li>
+                <li><a href="#budgets_<%= group.id %>" data-toggle="tab">预算</a></li>
+                <li><a href="#accounts_<%= group.id %>" data-toggle="tab">帐务</a></li>
+              </ul>
+
+              <div class="tab-content">
+                <div class="tab-pane active" id="activities_<%= group.id %>">
+                  <%= link_to("没有活动，发起一个让大家来参与吧！", new_activity_path) if group.activities.empty? %>
+                  <% group.activities.each do |active| %>
+                    <div>
+                      <%= active.subject %> / <%= link_to active.user.nick_name, user_path(active.user) %> / <%= active.start_date.strftime("%Y-%m-%d") %> -- <%= active.end_date.strftime("%Y-%m-%d") %>
+                    </div>
+                  <% end %>
+                  <% if @current_user.is_admin_group?(group) %>
+                    <%= link_to "发起活动", new_activity_path(:group_id => group.id) %>
+                  <% end %>
+                </div>
+                <div class="tab-pane" id="budgets_<%= group.id %>">This Budget</div>
+                <div class="tab-pane" id="accounts_<%= group.id %>">
+                  <%= link_to("做好帐哦，来记一个吧！", new_account_path ) if group.activities.empty? %>
+                  <% if @current_user.is_admin_group?(group) %>
+                    <%= link_to "记个账先！", new_account_path(:group_id => group.id) %>
+                  <% end %>
+                </div>
+              </div>
+
+        </div>
+        <div class="span3">
+          <% unless @current_user.is_create_group?(group) %> 
+            <% if @current_user.joined_group?(group) %>
+              <%= link_to '退出这个圈子!', "/groups/#{group.id}/group_users/#{@current_user.joined_group(group).id}", :method => :delete %>
+            <% else %>
+              <%= link_to '喜欢？加入这个圈子!', "/groups/#{group.id}/group_users", :method => :post %>
+            <% end %>
+          <% else %>
+              <%= link_to '编辑我的圈子', edit_group_path(group) %>
+          <% end %>
+          <br/>
+          该小组的成员
+          <ul class="unstyled">
+            <% group.users.each do |member| %>
+              <li>
+                <%= link_to member.nick_name, user_path(member) %>
+                <% if member.is_admin_group?(group) %>
+                  / Admin
+                  <% if @current_user.is_create_group?(group) %>
+                  / <%= link_to "取消管理员", "/groups/#{group.id}/canel_admin/#{member.id}", :method => :put %>
+                  <% end %>
+                <% elsif @current_user.is_create_group?(group) %>
+                  / <%= link_to "设为管理员", "/groups/#{group.id}/set_admin/#{member.id}", :method => :put %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <% end %>
-</table>
-
-<br />
-
-<%= link_to '创建我的圈子', new_group_path %>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('[id^=group_tab]').tab('show');
+  })
+</script>

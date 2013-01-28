@@ -8,6 +8,9 @@ class CreateAccounts < ActiveRecord::Migration
       t.string :budget_type
       t.integer :budget_id
       t.text :remark
+      t.integer :visable_status, :null => false, :default => 0
+      t.integer :user_id
+      t.integer :activity_id
 
       t.timestamps
     end

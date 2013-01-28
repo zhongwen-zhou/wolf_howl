@@ -1,14 +1,22 @@
 WolfHowl::Application.routes.draw do
 
+  resources :activities
+
+
   resource :sessions
 
   resources :accounts
 
-  resources :group_users
-
   resources :categories
 
-  resources :groups
+  resources :groups do
+    member do
+      put 'set_admin/:user_id', :action => :set_admin
+      put 'canel_admin/:user_id', :action => :canel_admin
+    end
+    resources :group_users do
+    end
+  end
 
   resources :users
 
@@ -25,6 +33,8 @@ WolfHowl::Application.routes.draw do
     resources :users
 
     resource :sessions
+
+    root :to => "home#index"
   end
 
   # The priority is based upon order of creation:

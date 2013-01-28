@@ -1,8 +1,10 @@
 class GroupsController < ApplicationController
+  before_filter :active_nav
   # GET /groups
   # GET /groups.json
   def index
     @groups = Group.all
+    @group = Group.first
 
     @my_groups = @current_user.groups
 
@@ -82,5 +84,24 @@ class GroupsController < ApplicationController
       format.html { redirect_to groups_url }
       format.json { head :no_content }
     end
+  end
+
+  def set_admin
+    user = User.find(params[:user_id])
+    group = Group.find(params[:id])
+    user.joined_group(group).update_attribute(:is_admin, true)
+    return redirect_to groups_url
+  end
+
+  def canel_admin
+    user = User.find(params[:user_id])
+    group = Group.find(params[:id])
+    user.joined_group(group).update_attribute(:is_admin, false)
+    return redirect_to groups_url
+  end
+  private
+
+  def active_nav
+    @active_nav = 'group'
   end
 end

@@ -1,6 +1,6 @@
 #encoding: utf-8
 class SessionsController < ApplicationController
-  layout false
+  # layout false
   skip_filter :authorize_login
   def index
   end
@@ -12,16 +12,23 @@ class SessionsController < ApplicationController
   def create
   	user = User.new(params[:user])
   	@user = user.authorize_user
-  	Rails.logger.info("===----user:#{@user.inspect}")
-  	if @user.present?
-  		session[:current_user_id] = @user.id
+    if @user.present?
+      @user.sign_in(request.remote_ip)
+      session[:current_user_id] = @user.id
+      if params[:user][:is_remember] == 'true'
+        cookies[:access_token] = @user.remember_me
+      else
+        cookies[:access_token] = @user.canel_remember_me
+      end
   		return redirect_to root_path
   	else
+      @user = User.new
   		return render :action => :new, :notice => "用户名或密码错误！"
   	end
   end
 
   def destroy
+    @current_user.remember_me
     session[:current_user_id] = nil
     return redirect_to root_path
   end

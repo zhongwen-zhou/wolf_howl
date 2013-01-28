@@ -13,6 +13,6 @@ class Admin::ApplicationController < ActionController::Base
   end
 
   def authorize_login
-  	return redirect_to new_session_path unless @current_user.present?
+  	return redirect_to new_sessions_path unless @current_user.present?
   end
 end

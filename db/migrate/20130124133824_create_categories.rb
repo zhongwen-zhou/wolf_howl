@@ -3,9 +3,9 @@ class CreateCategories < ActiveRecord::Migration
     create_table :categories do |t|
       t.string :name
       t.text :description
-      t.integer :level
-      t.integer :status
-      t.integer :postion
+      t.integer :level, :default => 0
+      t.integer :status, :default => 0
+      t.integer :postion, :default => 0
       t.integer :parent_id
       t.integer :user_id
 
