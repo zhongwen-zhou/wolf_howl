@@ -1,4 +1,4 @@
-class BudgetsController < ApplicationController
+class Personal::BudgetsController < Personal::ApplicationController
   # GET /budgets
   # GET /budgets.json
   def index
@@ -24,8 +24,9 @@ class BudgetsController < ApplicationController
   # GET /budgets/new
   # GET /budgets/new.json
   def new
-    @group_id = params[:group_id]
-    activity = Activity.find(params[:activity_id])
+    # @group_id = params[:group_id]
+    @activity = Activity.find(params[:activity_id])
+    # @current_user.create_accounts(params[:])
     # @budget = 
     @budget = Budget.new
     respond_to do |format|
@@ -42,10 +43,13 @@ class BudgetsController < ApplicationController
   # POST /budgets
   # POST /budgets.json
   def create
-    @budget = Budget.new(params[:budget])
+    activity = Activity.find(params[:activity_id])
+    @budget = @current_user.create_budget(params[:budget], activity)
+
+    # @budget = Budget.new(params[:budget])
 
     respond_to do |format|
-      if @budget.save
+      if @budget.valid?
         format.html { redirect_to @budget, notice: 'Budget was successfully created.' }
         format.json { render json: @budget, status: :created, location: @budget }
       else

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Wolf_Howl</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="index.html_files/track.js" data-site-id="4f0dc9fef5a1f55508000013" id="gauges-tracker" async="" type="text/javascript"></script><script src="index.html_files/ga.js" async="" type="text/javascript"></script><script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-146052-10']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  <style type="text/css">.holderjs-fluid {font-size:16px;font-weight:bold;text-align:center;font-family:sans-serif;border-collapse:collapse;border:0;vertical-align:middle;margin:0}
+</style>
+  <%= stylesheet_link_tag "application/application", :media => "all" %>
+    <%= javascript_include_tag "application/application" %>
+    <%= csrf_meta_tags %>
+</head>
+
+  <body data-twttr-rendered="true" data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Wolf_Howl</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="<%= @active_nav == 'home' ? 'active' : '' %>">
+                <%= link_to "Wolf_Howl", root_path %>
+              </li>
+              <li class="<%= @active_nav == 'group' ? 'active' : '' %>">
+                <%= link_to "看看圈子", groups_path %>
+              </li>
+              <li class="">
+                <%= link_to "我的帐务", accounts_path %>
+              </li>
+              <li class="">
+                <a href="http://twitter.github.com/bootstrap/base-css.html">看看我们的预算</a>
+              </li>
+
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">我的个人业务</a>
+                <ul class="dropdown-menu">
+                  <% if @current_user.present? %>
+                    <li>
+                      <%= link_to "我的活动", user_activities_path(@current_user) %>
+                    </li>
+                    <li>
+                      <%= link_to "我的帐务", user_accounts_path(@current_user) %>
+                    </li>
+                    <li>
+                      <%= link_to "我的预算", user_budgets_path(@current_user) %>
+                    </li>
+                  <% else %>
+                        <li>
+                      <%= link_to "我的活动", activities_path %>
+                    </li>
+                    <li>
+                      <%= link_to "我的帐务", accounts_path %>
+                    </li>
+                    <li>
+                      <%= link_to "我的预算", budgets_path %>
+                    </li>
+                  <% end %>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="offset8">
+            <ul class="nav">
+                <% if @current_user.present? %>
+              <li class="active">
+                  <%= link_to @current_user.nick_name, edit_user_path(@current_user) %>
+              </li>
+              <li class="active">
+                  <%= link_to "注销", sessions_path, :method => "delete" %>
+              </li>
+                <% else %>
+              <li class="active">  
+                  <%= link_to "登录", new_sessions_path %>
+              </li>
+              <li class="active">
+                  <%= link_to "注册", new_user_path %>
+              </li<
+                <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="jumbotron masthead">
+  <%= yield :show_div %>
+</div>
+
+<div class="bs-docs-social">
+  <%= yield :operation_bar %>
+</div>
+
+<div class="container">
+  <%= yield %>
+</div>
+
+
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p>Tony设计</p>
+        <p>本项目是开源项目，项目地址是：<a href="https://github.com/zhongwen-zhou/wolf_howl/" target="_blank">https://github.com/zhongwen-zhou/wolf_howl/</a></p>
+        <p><a href="http://glyphicons.com/">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <ul class="footer-links">
+          <li><a href="http://blog.getbootstrap.com/"></a></li>
+          <li class="muted">·</li>
+          <li><a href="https://github.com/twitter/bootstrap/issues?state=open">Issues</a></li>
+          <li class="muted">·</li>
+          <li><a href="https://github.com/twitter/bootstrap/wiki">Roadmap and changelog</a></li>
+        </ul>
+      </div>
+    </footer>
+ 
+
+</body></html>

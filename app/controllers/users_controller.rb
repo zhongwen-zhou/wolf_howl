@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  layout 'personal'
   skip_filter :current_user, :only => [:new, :create]
   skip_filter :authorize_login, :only => [:new, :create]
   # GET /users

@@ -1,4 +1,4 @@
-class ActivityUsersController < ApplicationController
+class Circle::ActivityUsersController < Circle::ApplicationController
   # GET /activity_users
   # GET /activity_users.json
   def index

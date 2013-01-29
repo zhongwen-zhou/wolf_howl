@@ -1,0 +1,29 @@
+<%= form_for(@account) do |f| %>
+  <% if @account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
+
+      <ul>
+      <% @account.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label "金额" %><br />
+    <%= f.number_field :sum %>
+  </div>
+  <div class="field">
+    <%= f.label "收支类型" %><br />
+    <%= f.number_field :io_type %>
+  </div>
+  <div class="field">
+    <%= f.label "备注" %><br />
+    <%= f.text_area :remark, :cols => 15, :rows => 5 %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

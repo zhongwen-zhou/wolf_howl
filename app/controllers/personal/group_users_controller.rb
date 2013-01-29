@@ -1,4 +1,4 @@
-class GroupUsersController < ApplicationController
+class Personal::GroupUsersController < Personal::ApplicationController
   before_filter :current_group
   # GET /group_users
   # GET /group_users.json

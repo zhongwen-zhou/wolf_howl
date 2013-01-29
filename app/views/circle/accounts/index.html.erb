@@ -1,0 +1,35 @@
+<h1>Listing accounts</h1>
+
+<table>
+  <tr>
+    <th>Sum</th>
+    <th>Io type</th>
+    <th>Owner type</th>
+    <th>Owner</th>
+    <th>Budget type</th>
+    <th>Budget</th>
+    <th>Remark</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @accounts.each do |account| %>
+  <tr>
+    <td><%= account.sum %></td>
+    <td><%= account.io_type %></td>
+    <td><%= account.owner_type %></td>
+    <td><%= account.owner_id %></td>
+    <td><%= account.budget_type %></td>
+    <td><%= account.budget_id %></td>
+    <td><%= account.remark %></td>
+    <td><%= link_to 'Show', account %></td>
+    <td><%= link_to 'Edit', edit_account_path(account) %></td>
+    <td><%= link_to 'Destroy', account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Account', new_account_path %>

@@ -1,4 +1,4 @@
-class GroupsController < ApplicationController
+class Circle::GroupsController < Circle::ApplicationController
   before_filter :active_nav
   # GET /groups
   # GET /groups.json

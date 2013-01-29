@@ -1,4 +1,4 @@
-class AccountsController < ApplicationController
+class Personal::AccountsController < Personal::ApplicationController
   # GET /accounts
   # GET /accounts.json
   def index

@@ -1,16 +1,22 @@
 class ApplicationController < ActionController::Base
-  layout 'application'
+  # layout 'application'
   protect_from_forgery
 
   before_filter :current_user
   before_filter :authorize_login
   # before_filter :active_nav
 
+  def is_login?
+    session[:current_user_id].present?
+  end
+
+
   private
 
   def current_user
   	return @current_user if @current_user.present?
-  	return @current_user = User.find(session[:current_user_id]) if session[:current_user_id].present?
+  	return @current_user = session[:current_user_id].present? ? User.find(session[:current_user_id]) : User.guest_user
+    # return @current_user = User.find(session[:current_user_id]) if session[:current_user_id].present?
   end
 
   def authorize_login
@@ -22,7 +28,7 @@ class ApplicationController < ActionController::Base
         @current_user = user
         @current_user.sign_in(request.remote_ip)
         session[:current_user_id] = @current_user.id
-        if @current_user.token_updated_at < (Time.now - 1.minute)
+        if @current_user.token_updated_at < (Time.now - 30.minute)
           cookies[:access_token] = @current_user.remember_me
         end
         return true

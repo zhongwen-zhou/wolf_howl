@@ -1,9 +1,8 @@
-class ActivitiesController < ApplicationController
+class Personal::ActivitiesController < Personal::ApplicationController
   # GET /activities
   # GET /activities.json
   def index
-    @activities = Activity.all
-
+    @activities = @current_user.activities
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @activities }
@@ -24,9 +23,9 @@ class ActivitiesController < ApplicationController
   # GET /activities/new
   # GET /activities/new.json
   def new
-    @group = Group.find(params[:group_id])
+    # @group = Group.find(params[:group_id])
     @activity = Activity.new
-    @group_id = params[:group_id]
+    # @group_id = params[:group_id]
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @activity }
@@ -41,12 +40,7 @@ class ActivitiesController < ApplicationController
   # POST /activities
   # POST /activities.json
   def create
-    if params.has_key?(:group_id)
-      group = Group.find(params[:group_id])
-      @activity =  group.create_activity(params[:activity].merge!({:user_id => @current_user.id}))
-    else
-      @activity = @current_user.create_activity(params[:activity])
-    end
+    @activity = @current_user.create_activity(params[:activity])
 
     respond_to do |format|
       if @activity.errors.empty?
@@ -86,4 +80,5 @@ class ActivitiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 end

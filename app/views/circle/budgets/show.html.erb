@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @budget.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @budget.description %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%= @budget.start_date %>
+</p>
+
+<p>
+  <b>End date:</b>
+  <%= @budget.end_date %>
+</p>
+
+<p>
+  <b>Visable status:</b>
+  <%= @budget.visable_status %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @budget.status %>
+</p>
+
+<p>
+  <b>Total sum:</b>
+  <%= @budget.total_sum %>
+</p>
+
+<p>
+  <b>Balance sum:</b>
+  <%= @budget.balance_sum %>
+</p>
+
+<p>
+  <b>Genre:</b>
+  <%= @budget.genre_id %>
+</p>
+
+<p>
+  <b>Genre type:</b>
+  <%= @budget.genre_type %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= @budget.owner_id %>
+</p>
+
+<p>
+  <b>Owner type:</b>
+  <%= @budget.owner_type %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @budget.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_budget_path(@budget) %> |
+<%= link_to 'Back', budgets_path %>

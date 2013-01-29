@@ -1,0 +1,80 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Email:</b>
+  <%= @user.email %>
+</p>
+
+<p>
+  <b>Nick name:</b>
+  <%= @user.nick_name %>
+</p>
+
+<p>
+  <b>Password:</b>
+  <%= @user.password %>
+</p>
+
+<p>
+  <b>Brief introduction:</b>
+  <%= @user.brief_introduction %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @user.status %>
+</p>
+
+<p>
+  <b>Access token:</b>
+  <%= @user.access_token %>
+</p>
+
+<p>
+  <b>Token updated at:</b>
+  <%= @user.token_updated_at %>
+</p>
+
+<p>
+  <b>Following count:</b>
+  <%= @user.following_count %>
+</p>
+
+<p>
+  <b>Follower count:</b>
+  <%= @user.follower_count %>
+</p>
+
+<p>
+  <b>Group count:</b>
+  <%= @user.group_count %>
+</p>
+
+<p>
+  <b>Sign in count:</b>
+  <%= @user.sign_in_count %>
+</p>
+
+<p>
+  <b>Current sign in at:</b>
+  <%= @user.current_sign_in_at %>
+</p>
+
+<p>
+  <b>Current sign in ip:</b>
+  <%= @user.current_sign_in_ip %>
+</p>
+
+<p>
+  <b>Last sign in at:</b>
+  <%= @user.last_sign_in_at %>
+</p>
+
+<p>
+  <b>Last sign in ip:</b>
+  <%= @user.last_sign_in_ip %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

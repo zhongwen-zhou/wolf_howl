@@ -2,23 +2,14 @@
 <html lang="en"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Wolf_Howl</title>
+    <title><%= @title.blank? ? "Wolf_Howl" : "Wolf_Howl | #{@title}"%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <script src="index.html_files/track.js" data-site-id="4f0dc9fef5a1f55508000013" id="gauges-tracker" async="" type="text/javascript"></script><script src="index.html_files/ga.js" async="" type="text/javascript"></script><script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-146052-10']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
-  <style type="text/css">.holderjs-fluid {font-size:16px;font-weight:bold;text-align:center;font-family:sans-serif;border-collapse:collapse;border:0;vertical-align:middle;margin:0}
-</style>
-  <%= stylesheet_link_tag "application/application", :media => "all" %>
+
+    <style type="text/css">.holderjs-fluid {font-size:16px;font-weight:bold;text-align:center;font-family:sans-serif;border-collapse:collapse;border:0;vertical-align:middle;margin:0}
+    </style>
+    <%= stylesheet_link_tag "application/application", :media => "all" %>
     <%= javascript_include_tag "application/application" %>
     <%= csrf_meta_tags %>
 </head>
@@ -41,23 +32,25 @@
               <li class="<%= @active_nav == 'home' ? 'active' : '' %>">
                 <%= link_to "Wolf_Howl", root_path %>
               </li>
-              <li class="<%= @active_nav == 'group' ? 'active' : '' %>">
-                <%= link_to "看看圈子", groups_path %>
-              </li>
-              <li class="">
-                <%= link_to "我的帐务", accounts_path %>
-              </li>
-              <li class="">
-                <a href="http://twitter.github.com/bootstrap/base-css.html">看看我们的预算</a>
-              </li>
-              <li class="">
-                <a href="http://twitter.github.com/bootstrap/components.html">我的个人业务</a>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">我的个人业务</a>
+                <ul class="dropdown-menu">
+                    <li>
+                      <%= link_to "我的活动", personal_user_activities_path(@current_user) %>
+                    </li>
+                    <li>
+                      <%= link_to "我的帐务", personal_user_accounts_path(@current_user) %>
+                    </li>
+                    <li>
+                      <%= link_to "我的预算", personal_user_budgets_path(@current_user) %>
+                    </li>
+                </ul>
               </li>
             </ul>
           </div>
           <div class="offset8">
             <ul class="nav">
-                <% if @current_user.present? %>
+                <% if is_login? %>
               <li class="active">
                   <%= link_to @current_user.nick_name, edit_user_path(@current_user) %>
               </li>
@@ -98,13 +91,13 @@
       <div class="container">
         <p>Tony设计</p>
         <p>本项目是开源项目，项目地址是：<a href="https://github.com/zhongwen-zhou/wolf_howl/" target="_blank">https://github.com/zhongwen-zhou/wolf_howl/</a></p>
-        <p><a href="http://glyphicons.com/">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <p><a href="#">Glyphicons Free</a> licensed under <a href="#">CC BY 3.0</a>.</p>
         <ul class="footer-links">
-          <li><a href="http://blog.getbootstrap.com/"></a></li>
+          <li><a href="#"></a></li>
           <li class="muted">·</li>
-          <li><a href="https://github.com/twitter/bootstrap/issues?state=open">Issues</a></li>
+          <li><a href="#">Issues</a></li>
           <li class="muted">·</li>
-          <li><a href="https://github.com/twitter/bootstrap/wiki">Roadmap and changelog</a></li>
+          <li><a href="#">Roadmap and changelog</a></li>
         </ul>
       </div>
     </footer>

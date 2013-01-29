@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
 
   ADMIN_PERMISSION = 99
 
+  GUEST_PERMISSION = -1
+
   def authorize_user
   	db_user = User.where(:email => self.email).first
   	return nil if db_user.nil? || db_user.password != self.password
@@ -58,6 +60,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.guest_user
+    User.where(:permission => GUEST_PERMISSION).first
+  end
+
+  def is_guest_user?
+    self.permission == GUEST_PERMISSION
+  end
+
   def joined_group?(group)
     joined_group(group).present?
   end
@@ -68,9 +78,20 @@ class User < ActiveRecord::Base
 
   def create_activity(params)
     User.transaction do
-      activity = self.activities.create(params)
+      activity = self.activities.create(params.merge!({:user_id => self.id}))
       join_activity(activity,nil,true)
       return activity
+    end
+  end
+
+  def create_budget(params, activity = nil, group = nil)
+    if group.present?
+
+    else
+      params = params.merge({:genre => activity}) if activity.present?
+      params = params.merge({:user_id => self.id})
+      budget = self.budgets.create(params)
+      return budget
     end
   end
 

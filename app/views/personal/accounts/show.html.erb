@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Sum:</b>
+  <%= @account.sum %>
+</p>
+
+<p>
+  <b>Io type:</b>
+  <%= @account.io_type %>
+</p>
+
+<p>
+  <b>Owner type:</b>
+  <%= @account.owner_type %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= @account.owner_id %>
+</p>
+
+<p>
+  <b>Budget type:</b>
+  <%= @account.budget_type %>
+</p>
+
+<p>
+  <b>Budget:</b>
+  <%= @account.budget_id %>
+</p>
+
+<p>
+  <b>Remark:</b>
+  <%= @account.remark %>
+</p>
+
+
+<%= link_to 'Edit', edit_account_path(@account) %> |
+<%= link_to 'Back', accounts_path %>

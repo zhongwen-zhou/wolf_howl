@@ -1,6 +1,6 @@
 #encoding: utf-8
 class SessionsController < ApplicationController
-  # layout false
+  layout 'personal'
   skip_filter :authorize_login
   def index
   end
@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
   		return redirect_to root_path
   	else
       @user = User.new
-  		return render :action => :new, :notice => "用户名或密码错误！"
+  		return redirect_to new_sessions_path, :notice => "用户名或密码错误！"
   	end
   end
 
