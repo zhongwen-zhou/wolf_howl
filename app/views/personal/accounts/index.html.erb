@@ -1,35 +1,93 @@
-<h1>Listing accounts</h1>
+<%= content_for :operation_bar do %>
+  <div class="container">
+    <ul class="bs-docs-social-buttons">
+      <li>
+        <%= link_to '新建帐务', new_personal_user_account_path(@current_user) %>
+      </li>
 
-<table>
-  <tr>
-    <th>Sum</th>
-    <th>Io type</th>
-    <th>Owner type</th>
-    <th>Owner</th>
-    <th>Budget type</th>
-    <th>Budget</th>
-    <th>Remark</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @accounts.each do |account| %>
-  <tr>
-    <td><%= account.sum %></td>
-    <td><%= account.io_type %></td>
-    <td><%= account.owner_type %></td>
-    <td><%= account.owner_id %></td>
-    <td><%= account.budget_type %></td>
-    <td><%= account.budget_id %></td>
-    <td><%= account.remark %></td>
-    <td><%= link_to 'Show', account %></td>
-    <td><%= link_to 'Edit', edit_account_path(account) %></td>
-    <td><%= link_to 'Destroy', account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+      <li class="follow-btn">
+        
+      </li>
+      <li class="tweet-btn">
+       
+      </li>
+    </ul>
+  </div>
 <% end %>
-</table>
+
+<h1>我的帐务</h1>
+    <div class="row-fluid">
+        <div class="span2">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="<%= @top_menu_type == 'all' ? 'active' : '' %>">
+                    <%= link_to "所有帐务", personal_user_accounts_path(@current_user) %>
+                </li>
+                <li class="<%= @top_menu_type == 'io_type' ? 'active' : '' %>">
+                    <%= link_to "收支类型", personal_user_accounts_path(@current_user, :top_menu_type => 'io_type') %>
+                </li> 
+                <li class="<%= @top_menu_type == 'category_type' ? 'active' : '' %>">
+                    <%= link_to "帐务类别", personal_user_accounts_path(@current_user, :top_menu_type => 'category_type') %>
+                </li> 
+                <li class="<%= @top_menu_type == 'activity_type' ? 'active' : '' %>">
+                    <%= link_to "活动帐务", personal_user_accounts_path(@current_user, :top_menu_type => 'activity_type') %>
+                </li>
+                <li class="<%= @top_menu_type == 'budget_type' ? 'active' : '' %>">
+                    <%= link_to "预算帐务", personal_user_accounts_path(@current_user, :top_menu_type => 'budget_type') %>
+                </li> 
+                <li class="<%= @top_menu_type == 'budget_type' ? 'active' : '' %>">
+                    <%= link_to "帐务统计", statistics_personal_user_accounts_path(@current_user, :top_menu_type => 'budget_type') %>
+                </li>                                                                              
+            </ul>
+        </div>
+        <div class="span8">
+            <div>
+                <% if @top_menu_type == 'io_type' %>
+                    <ul class="nav nav-tabs">
+                      <li class="<%= @io_type == 'out_come' ? 'active' : '' %>">
+                        <%= link_to "支出", personal_user_accounts_path(@current_user, :top_menu_type => 'io_type', :io_type => 'out_come') %>
+                      </li>
+                      <li class="<%= @io_type == 'in_come' ? 'active' : '' %>">
+                        <%= link_to "收入", personal_user_accounts_path(@current_user, :top_menu_type => 'io_type', :io_type => 'in_come') %>
+                      </li>
+                    </ul>
+                <% elsif @top_menu_type == 'category_type' %>
+                    <ul class="nav nav-tabs">
+                      <li class="<%= @io_type == 'out_come' ? 'active' : '' %>">
+                        <%= link_to "支出", personal_user_accounts_path(@current_user, :top_menu_type => 'category_type') %>
+                      </li>
+                      <li class="<%= @io_type == 'in_come' ? 'active' : '' %>">
+                        <%= link_to "收入", personal_user_accounts_path(@current_user, :top_menu_type => 'category_type') %>
+                      </li>
+                    </ul>                    
+                <% end %>
+            </div>
+            <table class="table table-striped">
+              <tr>
+                <th>金额</th>
+                <th>收支类型</th>
+                <th>备注</th>
+                <th>记帐时间</th>
+                <th>操作</th>
+                <th></th>
+              </tr>
+
+            <% @accounts.each do |account| %>
+              <tr>
+                <td><%= account.sum %></td>
+                <td><%= Account::IO_TYPE[account.io_type] %></td>
+                <td><%= account.remark %></td>
+                <td><%= account.created_at.strftime("%Y-%m-%d") %></td>
+                <td><%= link_to '详情', personal_user_account_path(@current_user, account) %></td>
+                <td><%= link_to '编辑', edit_personal_user_account_path(@current_user, account) %></td>
+                <td><%= link_to '删除', [:personal, @current_user, account], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+            </table>
+            <div>
+                <%= paginate @accounts %>
+            </div>
+        </div>
+    </div>
 
 <br />
 
-<%= link_to 'New Account', new_account_path %>

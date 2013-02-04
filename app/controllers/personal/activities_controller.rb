@@ -2,7 +2,10 @@ class Personal::ActivitiesController < Personal::ApplicationController
   # GET /activities
   # GET /activities.json
   def index
-    @activities = @current_user.activities
+    @activities = @current_user.activities.page(params[:page])
+    @activities.each do |activity|
+      activity.check_update_status
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @activities }

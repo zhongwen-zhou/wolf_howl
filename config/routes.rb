@@ -25,7 +25,9 @@ WolfHowl::Application.routes.draw do
   namespace :personal do
     resources :users, :only =>[:edit,:update] do
       resources :budgets
-      resources :accounts
+      resources :accounts do
+        get 'statistics', :on => :collection
+      end
       # resources :groups
       resources :activities do 
         resources :budgets
@@ -38,7 +40,9 @@ WolfHowl::Application.routes.draw do
   # namespace :admin do
   #   resources :budgets
     
-  #   resources :accounts
+  #   resources :accounts do
+  #     get 'statistics', :on => :collection
+  #   end
 
   #   resources :group_users
 

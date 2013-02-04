@@ -17,7 +17,7 @@
 <h1>我的活动</h1>
 
 <% @activities.each do |activity| %>
-    <div class="container">
+    <div class="container" style="height:300px">
         <div class="row-fluid">
             <div class="span12">
                 <div class="span4">
@@ -72,21 +72,22 @@
                             <div class="container span12">
                         <% activity.budgets.each do |budget| %>
                                 <div class="row-fluid">
-                            <%= link_to budget.name, personal_user_activity_budget_path(@current_user, activity, budget) %>
+                                  <%= "#{budget.name} #{budget.total_sum}" %>
                                 </div>
                         <% end %>
                                 <div class="row-fluid">
-                                    <%= link_to "策划一个新预算！", new_personal_user_activity_budget_path(@current_user,activity) %>
+                                    <%= link_to("策划一个新预算！", new_personal_user_activity_budget_path(@current_user,activity)) unless activity.end? %>
                                 </div>
                             </div>
                     </div>
                     <div class="tab-pane" id="accounts_<%= activity.id %>">
                       <% if activity.accounts.empty? %>
-                      <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,activity) %>
+                        <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,activity) %>
                       <% else %>
-                        <% group.accounts.each do |account| %>
+                        <% activity.accounts.each do |account| %>
+                          <%= "#{account.sum}  #{account.created_at.strftime('%Y-%m-%d %H:%M:%S')}" %>  <br/>
                         <% end %>
-
+                        <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,activity) %>
                       <% end %>
                     </div>
                   </div>       
@@ -96,6 +97,9 @@
         <hr/>
     </div>
 <% end %>
+    <div>
+        <%= paginate @activities %>
+    </div>
 
 <br />
 

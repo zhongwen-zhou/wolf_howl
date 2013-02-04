@@ -1,47 +1,74 @@
-<h1>Listing budgets</h1>
+<%= content_for :operation_bar do %>
+  <div class="container">
+    <ul class="bs-docs-social-buttons">
+      <li>
+        <%= link_to '新建预算', new_personal_user_budget_path(@current_user) %>
+      </li>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Start date</th>
-    <th>End date</th>
-    <th>Visable status</th>
-    <th>Status</th>
-    <th>Total sum</th>
-    <th>Balance sum</th>
-    <th>Genre</th>
-    <th>Genre type</th>
-    <th>Owner</th>
-    <th>Owner type</th>
-    <th>User</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @budgets.each do |budget| %>
-  <tr>
-    <td><%= budget.name %></td>
-    <td><%= budget.description %></td>
-    <td><%= budget.start_date %></td>
-    <td><%= budget.end_date %></td>
-    <td><%= budget.visable_status %></td>
-    <td><%= budget.status %></td>
-    <td><%= budget.total_sum %></td>
-    <td><%= budget.balance_sum %></td>
-    <td><%= budget.genre_id %></td>
-    <td><%= budget.genre_type %></td>
-    <td><%= budget.owner_id %></td>
-    <td><%= budget.owner_type %></td>
-    <td><%= budget.user_id %></td>
-    <td><%= link_to 'Show', budget %></td>
-    <td><%= link_to 'Edit', edit_budget_path(budget) %></td>
-    <td><%= link_to 'Destroy', budget, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+      <li class="follow-btn">
+        
+      </li>
+      <li class="tweet-btn">
+       
+      </li>
+    </ul>
+  </div>
 <% end %>
-</table>
 
+<h1>我的预算</h1>
+    <div class="row-fluid">
+        <div class="span2">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="<%= @top_menu_type == 'all' ? 'active' : '' %>">
+                    <%= link_to "所有帐务", personal_user_accounts_path(@current_user) %>
+                </li>
+                <li class="<%= @top_menu_type == 'io_type' ? 'active' : '' %>">
+                    <%= link_to "收支类型", personal_user_accounts_path(@current_user, :top_menu_type => 'io_type') %>
+                </li> 
+                <li class="<%= @top_menu_type == 'category_type' ? 'active' : '' %>">
+                    <%= link_to "帐务类别", personal_user_accounts_path(@current_user, :top_menu_type => 'category_type') %>
+                </li> 
+                <li class="<%= @top_menu_type == 'activity_type' ? 'active' : '' %>">
+                    <%= link_to "活动帐务", personal_user_accounts_path(@current_user, :top_menu_type => 'activity_type') %>
+                </li>
+                <li class="<%= @top_menu_type == 'budget_type' ? 'active' : '' %>">
+                    <%= link_to "预算帐务", personal_user_accounts_path(@current_user, :top_menu_type => 'budget_type') %>
+                </li>                                                               
+            </ul>
+        </div>
+        <div class="span10">
+            <table class="table table-striped">
+              <tr>
+                <th>预算名</th>
+                <th>预算描述</th>
+                <th>开始日期</th>
+                <th>截止日期</th>
+                <th>可见状态</th>
+                <th>状态</th>
+                <th>预算总金额</th>
+                <th>当前余额</th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+
+                <% @budgets.each do |budget| %>
+              <tr>
+                <td><%= budget.name %></td>
+                <td><%= budget.description %></td>
+                <td><%= budget.start_date.strftime("%Y-%m-%d") %></td>
+                <td><%= budget.end_date.strftime("%Y-%m-%d") %></td>
+                <td><%= Budget::VISABLE_STATUS[budget.visable_status] %></td>
+                <td><%= budget.status %></td>
+                <td><%= budget.total_sum %></td>
+                <td><%= budget.balance_sum %></td>
+                <td><%= link_to 'Show', personal_user_budget_path(@current_user, budget) %></td>
+                <td><%= link_to 'Edit', edit_personal_user_budget_path(@current_user, budget) %></td>
+                <td><%= link_to 'Destroy', personal_user_budget_path(@current_user, budget), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+                <% end %>
+            </table>
+        </div>
+    </div>
 <br />
 
-<%= link_to 'New Budget', new_budget_path %>

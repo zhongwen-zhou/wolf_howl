@@ -1,9 +1,24 @@
+#encoding: utf-8
 class Personal::AccountsController < Personal::ApplicationController
   # GET /accounts
   # GET /accounts.json
   def index
-    @accounts = Account.all
-
+    if params[:top_menu_type] == 'io_type'
+      @top_menu_type = 'io_type'
+      unless params[:io_type] == 'in_come'
+        @accounts = @current_user.accounts.outcome.page(params[:page])
+        @io_type = 'out_come'
+      else
+        @accounts = @current_user.accounts.income.page(params[:page])
+        @io_type = 'in_come'
+      end
+    elsif params[:top_menu_type] == 'category_type'
+      @top_menu_type = 'category_type'
+      @accounts = Account.page(params[:page])
+    else
+      @top_menu_type = 'all'
+      @accounts = Account.page(params[:page])
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @accounts }
@@ -24,6 +39,7 @@ class Personal::AccountsController < Personal::ApplicationController
   # GET /accounts/new
   # GET /accounts/new.json
   def new
+    @activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
     @account = Account.new
 
     respond_to do |format|
@@ -40,10 +56,15 @@ class Personal::AccountsController < Personal::ApplicationController
   # POST /accounts
   # POST /accounts.json
   def create
-    @account = Account.new(params[:account])
-
+    # @account = Account.new(params[:account])
+    if params.has_key?(:activity_id)
+      activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
+      @account = @current_user.create_account(params[:account], activity)
+    else
+      @account = @current_user.create_account(params[:account])
+    end
     respond_to do |format|
-      if @account.save
+      if @account.valid?
         format.html { redirect_to @account, notice: 'Account was successfully created.' }
         format.json { render json: @account, status: :created, location: @account }
       else
@@ -78,6 +99,17 @@ class Personal::AccountsController < Personal::ApplicationController
     respond_to do |format|
       format.html { redirect_to accounts_url }
       format.json { head :no_content }
+    end
+  end
+
+  def statistics
+    if params.has_key?(:statistics_type)
+      @paint_chart = true
+      @h = LazyHighCharts::HighChart.new('graph') do |f|
+        f.options[:chart][:defaultSeriesType] = "area"
+        f.series(:name=>'收入', :data=>[500,60,700,70,80,9,900])
+        f.series(:name=>'支出', :data=> [800,390,569,1000,500,269])
+      end
     end
   end
 end

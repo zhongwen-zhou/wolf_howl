@@ -1,0 +1,15 @@
+<h2>帐务统计</h2>
+<div>
+	<%= form_tag(statistics_personal_user_accounts_path(@current_user),:method => :get) do %>
+		<div>
+			<%= label_tag '统计类别' %>
+			<%= select_tag 'statistics_type',"<option value='peroid'>时间类别</option><option value='category收支类别'>One Month</option>".html_safe %>
+			<%= submit_tag '统计' %>
+		</div>
+	<% end %>
+</div>
+<div>
+	<% if @paint_chart %>
+		<%= high_chart("my_id", @h) %>
+	<% end %>
+</div>

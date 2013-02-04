@@ -95,6 +95,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def create_account(params, activity = nil, group =nil)
+    if group.present?
+    else
+      params = params.merge({:genre => activity}) if activity.present?
+      params = params.merge({:user_id => self.id})
+      account = self.accounts.create(params)
+    end
+  end
+
   def create_group(params)
     User.transaction do
       group = self.groups.create(params)

@@ -4,7 +4,7 @@ class Activity < ActiveRecord::Base
   validates  :subject, :presence => { :message => "不能为空！"}
   belongs_to :owner, :polymorphic => :true
   belongs_to :user
-  has_many :accounts, :as => :owner, :dependent => :destroy
+  has_many :accounts, :as => :genre, :dependent => :destroy
   has_many :budgets, :as => :genre, :dependent => :destroy
   has_many :activity_users, :dependent => :destroy
   has_many :users, :through => :activity_users
@@ -14,6 +14,7 @@ class Activity < ActiveRecord::Base
   STATUS_UN_START = 2
   STATUS = {STATUS_UN_START => "活动未开始", STATUS_RUNNING => "活动中", STATUS_END => "活动已结束"}
 
+  paginates_per 1
   def total_budgets_sum
   	sum = 0
   	budgets.each do |budget|
@@ -32,5 +33,28 @@ class Activity < ActiveRecord::Base
 
   def balance_sum
   	return total_budgets_sum - total_accounts_sum
+  end
+
+  def check_update_status
+    self.update_attribute(:status,check_status)
+  end
+
+  def running?
+    self.status == STATUS_RUNNING
+  end
+
+  def end?
+    self.status == STATUS_END
+  end
+
+  def un_start?
+    self.status == STATUS_UN_START
+  end
+
+  private
+  def check_status
+    return STATUS_UN_START if Time.now < self.start_date
+    return STATUS_END if Time.now > self.end_date
+    return STATUS_RUNNING
   end
 end

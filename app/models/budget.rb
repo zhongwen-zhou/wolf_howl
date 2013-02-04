@@ -5,4 +5,12 @@ class Budget < ActiveRecord::Base
   belongs_to :owner, :polymorphic => :true
   belongs_to :genre, :polymorphic => :true
   belongs_to :user
+
+  VISABLE_STATUS_PUBLIC = 0
+  VISABLE_STATUS_FRIENDLY = 1
+  VISABLE_STATUS_GROUP = 2
+  VISABLE_STATUS_PRIVATE = 3
+
+  VISABLE_STATUS = {VISABLE_STATUS_PUBLIC => '公开的', VISABLE_STATUS_FRIENDLY => '仅朋友可见', VISABLE_STATUS_GROUP => '小组可见', VISABLE_STATUS_PRIVATE => '私人的'}
+
 end
