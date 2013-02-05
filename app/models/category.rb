@@ -7,10 +7,10 @@ class Category < ActiveRecord::Base
   belongs_to :parent, :class_name => :Category, :foreign_key => :parent_id
   has_many :children, :class_name => :Category, :foreign_key => :parent_id
   validates :name, :presence => { :message => "不能为空！"}
-  LEVEL_TOP = 1
-  LEVEL_ROOT = 0
+  LEVEL_TOP = 0
+  # LEVEL_ROOT = 0
   scope :top_categories, where(:level => LEVEL_TOP) 
-  scope :root_categories, where(:level => LEVEL_ROOT)   
+  # scope :root_categories, where(:level => LEVEL_ROOT)   
 
 
   def create_child(user,params)

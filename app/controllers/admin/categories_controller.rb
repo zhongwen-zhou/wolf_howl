@@ -2,10 +2,17 @@ class Admin::CategoriesController < Admin::ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @top_categories = Category.top_categories
-    @current_parent_category = params.has_key?(:top_category_id) ? Category.find(params[:top_category_id]) : @top_categories.first
-    @categories = @current_parent_category.children#.page params[:page]
-    # @categories = Category.all.page params[:page]
+    unless params.has_key?(:top_category_id)
+      parent = Category.top_categories.first 
+    else
+      parent = Category.find(params[:top_category_id].to_i)
+    end
+    # @top_categories = Category.top_categories
+    # @current_parent_category = params.has_key?(:top_category_id) ? Category.find(params[:top_category_id]) : @top_categories.first
+    # @categories = @current_parent_category.children if @current_parent_category.present?#.page params[:page]
+    # @categories = Category.all#.page params[:page]
+    @categories = parent.children
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @categories }
@@ -43,16 +50,12 @@ class Admin::CategoriesController < Admin::ApplicationController
   # POST /categories
   # POST /categories.json
   def create
-    parent = Category.find(params[:category][:parent_id])
-    @category = parent.create_child(@current_user,params[:category])
-    # Rails.logger.info("===C:#{parent}")
-    # params = params[:category].remove(:parent_id) if params[:category][:parent_id].blank?
-    # if params
-    #   # @category = 
-    # else
-    #   @category = Category.new(params[:category].merge!({:user_id => @current.user_id}))
-    # end
-
+    if params[:category][:parent_id].present?
+      parent = Category.find(params[:category][:parent_id])
+      @category = parent.create_child(@current_user,params[:category])
+    else
+      @category = Category.create(params[:category].merge!({:user_id => @current_user.id}))
+    end
     respond_to do |format|
       if @category.save
         format.html { redirect_to admin_categories_path, notice: 'Category was successfully created.' }

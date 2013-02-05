@@ -24,7 +24,7 @@
   </div>
   <div class="field">
     <%= f.label "父类别" %><br />
-    <%= select_tag('category[parent_id]', options_from_collection_for_select(@top_categories, "id", "name")) %>
+    <%= select_tag('category[parent_id]', options_from_collection_for_select(@top_categories, "id", "name"),:prompt => "顶级类别") %>
   </div>
   <div class="actions">
     <%= f.submit "保存" %>

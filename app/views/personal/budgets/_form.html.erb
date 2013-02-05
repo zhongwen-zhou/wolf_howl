@@ -19,18 +19,24 @@
     <%= f.label :total_sum, "预算总金额" %><br />
     <%= f.text_field :total_sum %>
   </div>
-  <div class="field">
-    <%= f.label :start_date, "开始日期" %><br />
-    <%= f.text_field :start_date %>
-  </div>
-  <div class="field">
-    <%= f.label :end_date, "结束日期" %><br />
-    <%= f.text_field :end_date %>
-  </div>
-  <div class="field">
-    <%= f.label :visable_status, "可见状态" %><br />
-    <%= f.number_field :visable_status %>
-  </div>
+  <% unless @activity.present? %>
+    <div class="field">
+      <%= f.label :start_date, "开始日期" %><br />
+      <%= f.text_field :start_date %>
+    </div>
+    <div class="field">
+      <%= f.label :end_date, "结束日期" %><br />
+      <%= f.text_field :end_date %>
+    </div>
+    <div class="field">
+      <%= f.label :visable_status, "可见状态" %><br />
+      <%= f.number_field :visable_status %>
+    </div>
+  <% else %>
+    <%= f.hidden_field(:start_date,:vaule => @activity.start_date ) %>
+    <%= f.hidden_field(:end_date,:vaule => @activity.end_date ) %>
+    <%= f.hidden_field(:visable_status,:vaule => @activity.visable_status ) %>
+  <% end %>
   <div class="field">
     <%= f.label :description, "预算描述" %><br />
     <%= f.text_area :description, :rows => 5, :cols => 20 %>

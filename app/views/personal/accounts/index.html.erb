@@ -34,7 +34,7 @@
                 <li class="<%= @top_menu_type == 'budget_type' ? 'active' : '' %>">
                     <%= link_to "预算帐务", personal_user_accounts_path(@current_user, :top_menu_type => 'budget_type') %>
                 </li> 
-                <li class="<%= @top_menu_type == 'budget_type' ? 'active' : '' %>">
+                <li class="<%= @top_menu_type == 'statistics' ? 'active' : '' %>">
                     <%= link_to "帐务统计", statistics_personal_user_accounts_path(@current_user, :top_menu_type => 'budget_type') %>
                 </li>                                                                              
             </ul>
@@ -52,19 +52,35 @@
                     </ul>
                 <% elsif @top_menu_type == 'category_type' %>
                     <ul class="nav nav-tabs">
-                      <li class="<%= @io_type == 'out_come' ? 'active' : '' %>">
-                        <%= link_to "支出", personal_user_accounts_path(@current_user, :top_menu_type => 'category_type') %>
-                      </li>
-                      <li class="<%= @io_type == 'in_come' ? 'active' : '' %>">
-                        <%= link_to "收入", personal_user_accounts_path(@current_user, :top_menu_type => 'category_type') %>
-                      </li>
-                    </ul>                    
+                      <% Category.top_categories.each do |category| %>
+                        <li class="<%= @category_id == category.id ? 'active' : '' %>">
+                          <%= link_to category.name, personal_user_accounts_path(@current_user, :top_menu_type => 'category_type', :category_id => category.id) %>
+                        </li>
+                      <% end %>
+                    </ul>
+                <% elsif @top_menu_type =='activity_type' %>
+                    <ul class="nav nav-tabs">
+                      <% @current_user.activities.each do |activity| %>
+                        <li class="<%= @activity_id == activity.id ? 'active' : '' %>">
+                          <%= link_to activity.subject, personal_user_accounts_path(@current_user, :top_menu_type => 'activity_type', :activity_id => activity.id) %>
+                        </li>
+                      <% end %>
+                    </ul>       
+                <% elsif @top_menu_type =='budget_type' %>
+                    <ul class="nav nav-tabs">
+                      <% @current_user.budgets.each do |budget| %>
+                        <li class="<%= @budget_id == budget.id ? 'active' : '' %>">
+                          <%= link_to budget.name, personal_user_accounts_path(@current_user, :top_menu_type => 'budget_type', :budget_id => budget.id) %>
+                        </li>
+                      <% end %>
+                    </ul>                                                    
                 <% end %>
             </div>
             <table class="table table-striped">
               <tr>
                 <th>金额</th>
                 <th>收支类型</th>
+                <th>所属类型</th>
                 <th>备注</th>
                 <th>记帐时间</th>
                 <th>操作</th>
@@ -75,6 +91,7 @@
               <tr>
                 <td><%= account.sum %></td>
                 <td><%= Account::IO_TYPE[account.io_type] %></td>
+                <td><%= account.genre_type %></td>
                 <td><%= account.remark %></td>
                 <td><%= account.created_at.strftime("%Y-%m-%d") %></td>
                 <td><%= link_to '详情', personal_user_account_path(@current_user, account) %></td>

@@ -1,3 +1,4 @@
 class Circle::ApplicationController < ApplicationController
-  layout 'circle'
+  # layout 'circle'
+  layout 'personal'
 end

@@ -1,6 +1,6 @@
 #encoding: utf-8
 class Activity < ActiveRecord::Base
-  attr_accessible :address, :description, :end_date, :start_date, :status, :subject, :owner_id, :owner_type, :user_id
+  attr_accessible :address, :description, :end_date, :start_date, :status, :subject, :owner_id, :owner_type, :user_id, :visable_status
   validates  :subject, :presence => { :message => "不能为空！"}
   belongs_to :owner, :polymorphic => :true
   belongs_to :user
@@ -13,6 +13,13 @@ class Activity < ActiveRecord::Base
   STATUS_END = 1
   STATUS_UN_START = 2
   STATUS = {STATUS_UN_START => "活动未开始", STATUS_RUNNING => "活动中", STATUS_END => "活动已结束"}
+
+VISABLE_STATUS_PUBLIC = 0
+  VISABLE_STATUS_FRIENDLY = 1
+  VISABLE_STATUS_GROUP = 2
+  VISABLE_STATUS_PRIVATE = 3
+
+  VISABLE_STATUS = {VISABLE_STATUS_PUBLIC => '公开的', VISABLE_STATUS_FRIENDLY => '仅朋友可见', VISABLE_STATUS_GROUP => '小组可见', VISABLE_STATUS_PRIVATE => '私人的'}
 
   paginates_per 1
   def total_budgets_sum

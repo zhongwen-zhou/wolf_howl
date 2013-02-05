@@ -20,9 +20,31 @@
       <%= f.label :io_type, "收支类型" %><br />
       <%= select_tag "account[io_type]", io_type_option(@account).html_safe %>
     </div>
+    <div class="field">
+        <ul id="genre_tab" class="nav nav-tabs">
+          <li class="active"><a href="#category_type" val="Category" data-toggle="tab">类别帐务</a></li>
+          <li><a href="#budget_type" val="Budget" data-toggle="tab">预算帐务</a></li>
+          <li><a href="#activity_type" val="Activity" data-toggle="tab">活动帐务</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="category_type">
+            <%= select_tag('account[genre_id]', option_groups_from_collection_for_select(Category.top_categories, :children, :name, :id, :name, 3)) %>
+          </div>
+          <div class="tab-pane" id="budget_type">
+            <%= select_tag('account[genre_id]', options_from_collection_for_select(@budgets, :id, :name)) %>
+          </div>   
+          <div class="tab-pane" id="activity_type">
+            <%= select_tag('account[genre_id]', options_from_collection_for_select(@activities, :id, :subject)) %>
+          </div>             
+        </div>
+        <%= f.hidden_field(:genre_type, :value => 'Category') %>
+    </div>    
   <% else %>
       <%= f.hidden_field(:io_type,:vaule => Account::IO_TYPE_OUTCOME) %>
   <% end %>
+
+
+
   <div class="field">
     <%= f.label :remark, "备注" %><br />
     <%= f.text_area :remark, :cols => 15, :rows => 5 %>
@@ -31,3 +53,11 @@
     <%= f.submit "记起" %>
   </div>
 <% end %>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#genre_type').tab('show');
+    $('a[data-toggle="tab"]').on('shown', function (e) {
+      $('#account_genre_type').attr('value',$(e.target).attr('val'))
+    });
+  })
+</script>

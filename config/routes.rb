@@ -4,23 +4,23 @@ WolfHowl::Application.routes.draw do
 
   resources :users, :only => [:new, :create, :show, :edit, :update]
 
-  # namespace :circle do
-  #   resources :groups do
-  #     member do
-  #       put 'set_admin/:user_id', :action => :set_admin
-  #       put 'canel_admin/:user_id', :action => :canel_admin
-  #     end
-  #     resources :group_users, :only => [:create] 
+  namespace :circle do
+    resources :groups do
+      member do
+        put 'set_admin/:user_id', :action => :set_admin
+        put 'canel_admin/:user_id', :action => :canel_admin
+      end
+      resources :group_users, :only => [:create] 
 
-  #     resources :budgets
-  #     resources :accounts
-  #     resources :activities do 
-  #       resources :activity_users, :only => [:create]
-  #       resources :budgets
-  #       resources :accounts
-  #     end    
-  #   end
-  # end
+      resources :budgets
+      resources :accounts
+      resources :activities do 
+        resources :activity_users, :only => [:create]
+        resources :budgets
+        resources :accounts
+      end    
+    end
+  end
 
   namespace :personal do
     resources :users, :only =>[:edit,:update] do
@@ -37,25 +37,25 @@ WolfHowl::Application.routes.draw do
   end
 
 
-  # namespace :admin do
-  #   resources :budgets
+  namespace :admin do
+    # resources :budgets
     
-  #   resources :accounts do
-  #     get 'statistics', :on => :collection
-  #   end
+    # resources :accounts do
+      # get 'statistics', :on => :collection
+    # end
 
-  #   resources :group_users
+    # resources :group_users
 
-  #   resources :categories
+    resources :categories
 
-  #   resources :groups
+    # resources :groups
 
-  #   resources :users
+    # resources :users
 
-  #   resource :sessions
+    resource :sessions
 
-  #   root :to => "home#index"
-  # end
+    root :to => "home#index"
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

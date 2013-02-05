@@ -3,9 +3,11 @@ class Personal::ActivitiesController < Personal::ApplicationController
   # GET /activities.json
   def index
     @activities = @current_user.activities.page(params[:page])
-    @activities.each do |activity|
-      activity.check_update_status
-    end
+    # @activities.each do |activity|
+      # activity.check_update_status
+    # end
+    @activity = @current_user.activities.page(params[:page]).first
+    @activity.check_update_status
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @activities }
@@ -47,7 +49,7 @@ class Personal::ActivitiesController < Personal::ApplicationController
 
     respond_to do |format|
       if @activity.errors.empty?
-        format.html { redirect_to groups_path, notice: 'Activity was successfully created.' }
+        format.html { redirect_to personal_user_activities_path(@current_user), notice: 'Activity was successfully created.' }
         format.json { render json: @activity, status: :created, location: @activity }
       else
         format.html { render action: "new" }
