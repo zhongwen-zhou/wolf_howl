@@ -12,23 +12,23 @@
   <% end %>
 
   <div class="field">
-    <%= f.label "电子邮箱" %><br />
+    <%= f.label :email, "电子邮箱" %><br />
     <%= f.text_field :email %>
   </div>
   <div class="field">
-    <%= f.label "昵称" %><br />
+    <%= f.label :nick_name, "昵称" %><br />
     <%= f.text_field :nick_name %>
   </div>
   <div class="field">
-    <%= f.label "密码" %><br />
+    <%= f.label :password, "密码" %><br />
     <%= f.password_field :password %>
   </div>
   <div class="field">
-    <%= f.label "密码确认" %><br />
+    <%= f.label :password_confirmation, "密码确认" %><br />
     <%= f.password_field :password_confirmation %>
   </div>
   <div class="field">
-    <%= f.label "自我介绍" %><br />
+    <%= f.label :brief_introduction, "自我介绍" %><br />
     <%= f.text_area :brief_introduction, :rows => 3 %>
   </div>
   <div class="actions">

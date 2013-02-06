@@ -22,6 +22,7 @@ VISABLE_STATUS_PUBLIC = 0
   VISABLE_STATUS = {VISABLE_STATUS_PUBLIC => '公开的', VISABLE_STATUS_FRIENDLY => '仅朋友可见', VISABLE_STATUS_GROUP => '小组可见', VISABLE_STATUS_PRIVATE => '私人的'}
 
   paginates_per 1
+
   def total_budgets_sum
   	sum = 0
   	budgets.each do |budget|

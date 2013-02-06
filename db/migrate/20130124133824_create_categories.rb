@@ -9,6 +9,7 @@ class CreateCategories < ActiveRecord::Migration
       t.integer :max_postion
       t.integer :parent_id
       t.integer :user_id, :null => false
+      t.integer :io_type, :null => false, :default => 0
 
       t.timestamps
     end

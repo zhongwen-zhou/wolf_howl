@@ -11,9 +11,13 @@
   <% end %>
 
   <div class="field">
-    <%= f.label "类别名" %><br />
+    <%= f.label :name, "类别名" %><br />
     <%= f.text_field :name %>
   </div>
+  <div class="field">
+    <%= f.label :io_type, "收支类型" %><br />
+    <%= select_tag('category[io_type]', "<option value='0'>收入</option><option value='1'>支出</option>".html_safe ) %>
+  </div>  
   <div class="field">
     <%= f.label "类别描述" %><br />
     <%= f.text_area :description, :rows => 3 %>

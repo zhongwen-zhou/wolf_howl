@@ -2,23 +2,17 @@ class Personal::ActivitiesController < Personal::ApplicationController
   # GET /activities
   # GET /activities.json
   def index
-    @activities = @current_user.activities.page(params[:page])
-    # @activities.each do |activity|
-      # activity.check_update_status
-    # end
-    @activity = @current_user.activities.page(params[:page]).first
-    @activity.check_update_status
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @activities }
-    end
+    @activities = @current_user.activities.order('id desc').page(params[:page])
+    @activity = @activities.first
+    @activity.check_update_status if @activity.present?
+    return render :show
   end
 
   # GET /activities/1
   # GET /activities/1.json
   def show
+    @activities = @current_user.activities.order('id desc').page(params[:page])
     @activity = Activity.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @activity }
@@ -28,9 +22,7 @@ class Personal::ActivitiesController < Personal::ApplicationController
   # GET /activities/new
   # GET /activities/new.json
   def new
-    # @group = Group.find(params[:group_id])
-    @activity = Activity.new
-    # @group_id = params[:group_id]
+    @activity = Activity.new({:start_date => Time.now, :end_date => Time.now})
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @activity }
@@ -39,7 +31,7 @@ class Personal::ActivitiesController < Personal::ApplicationController
 
   # GET /activities/1/edit
   def edit
-    @activity = Activity.find(params[:id])
+    @activity = @current_user.activities.find(params[:id])
   end
 
   # POST /activities
@@ -65,7 +57,7 @@ class Personal::ActivitiesController < Personal::ApplicationController
 
     respond_to do |format|
       if @activity.update_attributes(params[:activity])
-        format.html { redirect_to @activity, notice: 'Activity was successfully updated.' }
+        format.html { redirect_to personal_user_activities_url(@current_user), notice: 'Activity was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -81,7 +73,7 @@ class Personal::ActivitiesController < Personal::ApplicationController
     @activity.destroy
 
     respond_to do |format|
-      format.html { redirect_to activities_url }
+      format.html { redirect_to personal_user_activities_url(@current_user) }
       format.json { head :no_content }
     end
   end

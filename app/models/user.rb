@@ -64,6 +64,11 @@ class User < ActiveRecord::Base
     User.where(:permission => GUEST_PERMISSION).first
   end
 
+  def self.create_guest_user
+    User.create({:email => "guest@wolf_howl.cn", :nick_name => "Guest", :password => "guest", :password_confirmation => "guest", :permission => GUEST_PERMISSION})
+  end
+
+
   def is_guest_user?
     self.permission == GUEST_PERMISSION
   end
@@ -97,8 +102,9 @@ class User < ActiveRecord::Base
 
   def create_account(params, activity = nil, group =nil)
     if group.present?
+
     else
-      params = params.merge({:genre => activity}) if activity.present?
+      params = params.merge({:genre => activity, :visable_status => activity.visable_status}) if activity.present?
       params = params.merge({:user_id => self.id})
       account = self.accounts.create(params)
     end

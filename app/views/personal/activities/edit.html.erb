@@ -1,6 +1,18 @@
-<h1>Editing activity</h1>
+<%= content_for :operation_bar do %>
+  <div class="container">
+    <ul class="bs-docs-social-buttons">
+      <li>
+        <%= link_to '创建活动', new_personal_user_activity_path(@current_user) %>
+      </li>
+      <li>
+        <%= link_to '删除活动', [:personal,@current_user,@activity], method: :delete, data: { confirm: '你确定要删除这项活动么？' } %>
+      </li>
+    </ul>
+  </div>
+<% end %>
+
+
+<h1>编辑我的活动</h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @activity %> |
-<%= link_to 'Back', activities_path %>

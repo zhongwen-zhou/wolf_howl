@@ -1,6 +1,8 @@
+#encoding: utf-8
 class UsersController < ApplicationController
   layout 'personal'
-  skip_filter :current_user, :only => [:new, :create]
+  # layout false
+  # skip_filter :current_user, :only => [:new, :create]
   skip_filter :authorize_login, :only => [:new, :create]
   # GET /users
   # GET /users.json
@@ -62,12 +64,18 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
+      if params.has_key?(:current_password)
+        if @user.password != params[:current_password]
+          @user.errors.add(:password,'当前密码不正确！')
+          return render action: "edit" 
+        end
       else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        params[:user] = params[:user].merge({:password_confirmation => @user.password})
+      end
+      if @user.update_attributes(params[:user])
+        return redirect_to root_path, notice: 'User was successfully created.'
+      else
+        return render action: "edit"
       end
     end
   end

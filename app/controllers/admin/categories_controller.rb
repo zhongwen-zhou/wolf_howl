@@ -2,17 +2,25 @@ class Admin::CategoriesController < Admin::ApplicationController
   # GET /categories
   # GET /categories.json
   def index
+    @io_type = Category::IO_TYPE_INCOME
+    @io_type = Category::IO_TYPE_OUTCOME if params[:io_type].to_i == Category::IO_TYPE_OUTCOME
+    Rails.logger.info("===IO_TYPE:#{@io_type}")
     unless params.has_key?(:top_category_id)
-      parent = Category.top_categories.first 
+      parent = Category.income.top_categories.first if @io_type == Category::IO_TYPE_INCOME
+      Rails.logger.info("===P-X:#{@parent}")
+      parent = Category.outcome.top_categories.first if @io_type == Category::IO_TYPE_INCOME
+      Rails.logger.info("===P-A:#{@parent}")
     else
       parent = Category.find(params[:top_category_id].to_i)
+      Rails.logger.info("===P-B:#{@parent}")
     end
     # @top_categories = Category.top_categories
     # @current_parent_category = params.has_key?(:top_category_id) ? Category.find(params[:top_category_id]) : @top_categories.first
     # @categories = @current_parent_category.children if @current_parent_category.present?#.page params[:page]
     # @categories = Category.all#.page params[:page]
-    @categories = parent.children
-
+    Rails.logger.info("===P:#{@parent}")
+    @categories = parent.children if parent.present?
+    Rails.logger.info("===C:#{@categories}")
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @categories }

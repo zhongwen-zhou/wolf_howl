@@ -9,6 +9,14 @@
             </div>
         </div>
         <ul class="nav nav-pills">
+            <ul class="nav nav-pills">
+              <li class="<%= 'active' if @io_type == 0 %>">
+                <%= link_to '收入', admin_categories_path(:io_type => Category::IO_TYPE_INCOME) %>
+              </li>
+              <li class="<%= 'active' if @io_type == 1 %>">
+                <%= link_to '支出', admin_categories_path(:io_type => Category::IO_TYPE_OUTCOME) %>
+              </li>
+            </ul>
           <% Category.top_categories.each do |category| %>
           <li class="<%= 'active' if @current_parent_category == category%>">
             <%= link_to category.name, admin_categories_path(:top_category_id => category.id) %>

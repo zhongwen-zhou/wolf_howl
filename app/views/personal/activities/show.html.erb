@@ -1,40 +1,120 @@
-<p id="notice"><%= notice %></p>
+<%= content_for :operation_bar do %>
+  <div class="container">
+    <ul class="bs-docs-social-buttons">
+      <li>
+        <%= link_to '创建活动', new_personal_user_activity_path(@current_user) %>
+      </li>
 
-<p>
-  <b>Subject:</b>
-  <%= @activity.subject %>
-</p>
+      <li>
+        <%= link_to('编辑活动', edit_personal_user_activity_path(@current_user, @activity)) if @activity.present? %>
+      </li>
+      <li>
+        <%= link_to('删除活动', [:personal,@current_user,@activity], method: :delete, data: { confirm: '你确定要删除这项活动么？' }) if @activity.present? %>
+      </li>
+    </ul>
+  </div>
+<% end %>
+<h1>我的活动</h1>
 
-<p>
-  <b>Description:</b>
-  <%= @activity.description %>
-</p>
+<% if @activity.present? %>
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="span4">
+                    <%= @activity.subject %> <br/>
+                    <%= @activity.description %> <br/>
+                </div>
+                <div class="span3 offset1">
+                    地点：<%= @activity.address %> <br/>
+                    活动时间：<%= @activity.start_date.strftime("%Y-%m-%d") %> ---
+                    <%= @activity.end_date.strftime("%Y-%m-%d") %>   <br/>
+                    活动状态：<%= Activity::STATUS[@activity.status] %> <br/> 
+                    可见状态：<%= Activity::VISABLE_STATUS[@activity.visable_status] %> <br/> 
+                </div>
+                <div class="span3">
+                  <ul id="activity_tab_<%= @activity.id %>" class="nav nav-tabs">
+                    <li class="active"><a href="#index_<%= @activity.id %>" data-toggle="tab">总览</a></li>
+                    <li><a href="#budgets_<%= @activity.id %>" data-toggle="tab">预算</a></li>
+                    <li><a href="#accounts_<%= @activity.id %>" data-toggle="tab">帐务</a></li>
+                  </ul>
 
-<p>
-  <b>Address:</b>
-  <%= @activity.address %>
-</p>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="index_<%= @activity.id %>">
+                            <div class="container span12">
+                                <div class="row-fluid">
+                                    <% if @activity.budgets.empty? %>
+                                      <%= link_to "策划一个新预算！", new_personal_user_activity_budget_path(@current_user,@activity) %>
+                                    <% else %>
+                                      总预算：<%= @activity.total_budgets_sum %>
+                                    <% end %>
+                                </div>
+                                <div class="row-fluid">
+                                    <% if @activity.budgets.empty? %>
+                                          <% if @activity.running? %>
+                                            <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,@activity) %>
+                                          <% else %>
+                                            活动不在进行状态中，不能记账哦！
+                                          <% end %>
+                                    <% else %>
+                                      目前支出：<%= @activity.total_accounts_sum %>
+                                    <% end %>
+                                </div>
+                                <div class="row-fluid">
+                                    <% unless @activity.budgets.empty? && @activity.accounts.empty? %>
+                                      当前余额：<%= @activity.balance_sum %>
+                                    <% end %>                                  
+                                </div>
+                            </div>
+                    </div>                    
+                    <div class="tab-pane" id="budgets_<%= @activity.id %>">
+                            <div class="container span12">
+                        <% @activity.budgets.each do |budget| %>
+                                <div class="row-fluid">
+                                  <%= "#{budget.name} #{budget.total_sum}" %>
+                                </div>
+                        <% end %>
+                                <div class="row-fluid">
+                                    <%= link_to("策划一个新预算！", new_personal_user_activity_budget_path(@current_user,@activity)) unless @activity.end? %>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="tab-pane" id="accounts_<%= @activity.id %>">
+                      <% if @activity.accounts.empty? %>
+                        <% if @activity.running? %>
+                          <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,@activity) %>
+                        <% else %>
+                          活动不在进行状态中，不能记账哦！
+                        <% end %>
+                      <% else %>
+                        <% @activity.accounts.each do |account| %>
+                          <%= "#{account.sum}  #{account.created_at.strftime('%Y-%m-%d %H:%M:%S')}  #{account.remark}" %>  <br/>
+                        <% end %>
 
-<p>
-  <b>Status:</b>
-  <%= @activity.status %>
-</p>
+                        <% if @activity.running? %>
+                          <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,@activity) %>
+                        <% else %>
+                          活动不在进行状态中，不能记账哦！
+                        <% end %>
 
-<p>
-  <b>Start date:</b>
-  <%= @activity.start_date %>
-</p>
+                      <% end %>
+                    </div>
+                  </div>       
+                </div>
+            </div>
+        </div>
+    </div>
+<% else %>
+  你目前还没有活动，请创建
+<% end %>
+    <div>
+        <%= paginate @activities %>
+    </div>
 
-<p>
-  <b>End date:</b>
-  <%= @activity.end_date %>
-</p>
-
-<p>
-  <b>User:</b>
-  <%= @activity.user_id %>
-</p>
+<br />
 
 
-<%= link_to 'Edit', edit_activity_path(@activity) %> |
-<%= link_to 'Back', activities_path %>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('[id^=activity_tab]').tab('show');
+  })
+</script>

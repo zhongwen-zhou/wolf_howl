@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20130128090421) do
     t.integer  "max_postion"
     t.integer  "parent_id"
     t.integer  "user_id",                    :null => false
+    t.integer  "io_type",     :default => 0, :null => false
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end

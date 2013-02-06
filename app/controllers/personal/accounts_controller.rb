@@ -47,6 +47,7 @@ class Personal::AccountsController < Personal::ApplicationController
       format.html # index.html.erb
       format.json { render json: @accounts }
     end
+    # return render :show
   end
 
   # GET /accounts/1
@@ -84,20 +85,30 @@ class Personal::AccountsController < Personal::ApplicationController
   def create
     # @account = Account.new(params[:account])
     if params.has_key?(:activity_id)
-      activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
-      @account = @current_user.create_account(params[:account], activity)
+      @activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
+      @account = @current_user.create_account(params[:account], @activity)
+      if @account.valid?
+        return redirect_to personal_user_activity_path(@current_user,@activity)
+      else
+        return render :new
+      end
     else
       @account = @current_user.create_account(params[:account])
-    end
-    respond_to do |format|
       if @account.valid?
-        format.html { redirect_to @account, notice: 'Account was successfully created.' }
-        format.json { render json: @account, status: :created, location: @account }
+        return redirect_to personal_user_accounts_path(@current_user)
       else
-        format.html { render action: "new" }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
+
       end
     end
+    # respond_to do |format|
+    #   if @account.valid?
+    #     format.html { redirect_to @account, notice: 'Account was successfully created.' }
+    #     format.json { render json: @account, status: :created, location: @account }
+    #   else
+    #     format.html { render action: "new" }
+    #     format.json { render json: @account.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PUT /accounts/1
@@ -151,15 +162,6 @@ class Personal::AccountsController < Personal::ApplicationController
       elsif params[:statistics_type] == 'activity_type'
       elsif params[:statistics_type] == 'budget_type'
       end
-          
-          
-          
-          
-      # @h = LazyHighCharts::HighChart.new('graph') do |f|
-      #   f.options[:chart][:defaultSeriesType] = "area"
-      #   f.series(:name=>'收入', :data=>[500,60,700,70,80,9,900])
-      #   f.series(:name=>'支出', :data=> [800,390,569,1000,500,269])
-      # end
     end
   end
 end

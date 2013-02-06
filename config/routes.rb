@@ -2,7 +2,7 @@ WolfHowl::Application.routes.draw do
 
   resource :sessions, :only => [:new, :create, :destroy]
 
-  resources :users, :only => [:new, :create, :show, :edit, :update]
+  resources :users#, :only => [:new, :create, :show, :edit, :update]
 
   namespace :circle do
     resources :groups do

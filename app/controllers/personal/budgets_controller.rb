@@ -43,14 +43,14 @@ class Personal::BudgetsController < Personal::ApplicationController
   # POST /budgets
   # POST /budgets.json
   def create
-    activity = Activity.find(params[:activity_id])
-    @budget = @current_user.create_budget(params[:budget], activity)
+    @activity = Activity.find(params[:activity_id])
+    @budget = @current_user.create_budget(params[:budget], @activity)
 
     # @budget = Budget.new(params[:budget])
 
     respond_to do |format|
       if @budget.valid?
-        format.html { redirect_to @budget, notice: 'Budget was successfully created.' }
+        format.html { redirect_to personal_user_activity_path(@current_user,@activity), notice: 'Budget was successfully created.' }
         format.json { render json: @budget, status: :created, location: @budget }
       else
         format.html { render action: "new" }
