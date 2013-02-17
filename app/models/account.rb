@@ -30,7 +30,7 @@ class Account < ActiveRecord::Base
     if genre_type == 'Activity'
       "活动/#{genre.subject}"      
     elsif genre_type == 'Category'
-
+      genre.name
     end
         
   end

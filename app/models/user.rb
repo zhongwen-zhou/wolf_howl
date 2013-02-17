@@ -35,6 +35,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def joind_activity?(activity)
+    ActivityUser.where(:user_id => self.id, :activity_id => activity.id).first.present?
+  end
+
   def quit_group(group)
     User.transaction do
       group_user = joined_group(group)

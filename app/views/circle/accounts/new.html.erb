@@ -1,4 +1,10 @@
-<h1>为该活动记账</h1>
+<% if @activity.present? %>
+	<h1>为该活动记账</h1>
+<% end %>
+<% if @group.present? %>
+	<h1>圈子记账</h1>
+<% end %>
+		
 
 <%= render 'form' %>
 

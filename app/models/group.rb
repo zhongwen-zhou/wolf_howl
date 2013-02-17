@@ -13,4 +13,10 @@ class Group < ActiveRecord::Base
   def create_activity(params)
     activity = self.activities.create(params)
   end
+
+  def create_budget(params,user,activity = nil)
+    params = params.merge!({:user_id => user.id})
+    params = params.merge!({:genre => activity}) if activity.present?
+    budget = self.budgets.create(params)
+  end
 end

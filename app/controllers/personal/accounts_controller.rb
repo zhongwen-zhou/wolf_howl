@@ -41,7 +41,7 @@ class Personal::AccountsController < Personal::ApplicationController
       @accounts = @current_user.accounts.where(:genre_type => 'Budget', :genre_id => budget.id).page(params[:page])
     else
       @top_menu_type = 'all'
-      @accounts = Account.page(params[:page])
+      @accounts = @current_user.accounts.page(params[:page])
     end
     respond_to do |format|
       format.html # index.html.erb

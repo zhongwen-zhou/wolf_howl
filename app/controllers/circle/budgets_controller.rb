@@ -24,9 +24,8 @@ class Circle::BudgetsController < Circle::ApplicationController
   # GET /budgets/new
   # GET /budgets/new.json
   def new
-    @group_id = params[:group_id]
-    activity = Activity.find(params[:activity_id])
-    # @budget = 
+    @activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
+    @group = Group.find(params[:group_id]) if params.has_key?(:group_id)
     @budget = Budget.new
     respond_to do |format|
       format.html # new.html.erb
@@ -42,10 +41,12 @@ class Circle::BudgetsController < Circle::ApplicationController
   # POST /budgets
   # POST /budgets.json
   def create
-    @budget = Budget.new(params[:budget])
+    @group = Group.find(params[:group_id]) if params.has_key?(:group_id)
+    @activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
+    @budget = @group.create_budget(params[:budget], @current_user, @activity)
 
     respond_to do |format|
-      if @budget.save
+      if @budget.valid?
         format.html { redirect_to @budget, notice: 'Budget was successfully created.' }
         format.json { render json: @budget, status: :created, location: @budget }
       else

@@ -1,4 +1,4 @@
-<%= form_for(@budget) do |f| %>
+<%= form_for([:circle, @group, @activity, @budget]) do |f| %>
   <% if @budget.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@budget.errors.count, "error") %> prohibited this budget from being saved:</h2>
@@ -12,31 +12,37 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
+    <%= f.label :name, "预算名" %><br />
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :start_date %><br />
-    <%= f.text_field :start_date %>
-  </div>
-  <div class="field">
-    <%= f.label :end_date %><br />
-    <%= f.text_field :end_date %>
-  </div>
-  <div class="field">
-    <%= f.label :visable_status %><br />
-    <%= f.number_field :visable_status %>
-  </div>
-  <div class="field">
-    <%= f.label :total_sum %><br />
+    <%= f.label :total_sum, "预算总金额" %><br />
     <%= f.text_field :total_sum %>
   </div>
+  <% unless @activity.present? %>
+    <div class="field">
+      <%= f.label :start_date, "开始日期" %><br />
+      <%= f.text_field :start_date %>
+    </div>
+    <div class="field">
+      <%= f.label :end_date, "结束日期" %><br />
+      <%= f.text_field :end_date %>
+    </div>
+    <div class="field">
+      <%= f.label :visable_status, "可见状态" %><br />
+      <%= f.number_field :visable_status %>
+    </div>
+  <% else %>
+    <%= f.hidden_field(:start_date,:vaule => @activity.start_date ) %>
+    <%= f.hidden_field(:end_date,:vaule => @activity.end_date ) %>
+    <%= f.hidden_field(:visable_status,:vaule => @activity.visable_status ) %>
+  <% end %>
   <div class="field">
-    <%= f.label :description %><br />
+    <%= f.label :description, "预算描述" %><br />
     <%= f.text_area :description, :rows => 5, :cols => 20 %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "保存" %>
   </div>
 <% end %>
 <script type="text/javascript">

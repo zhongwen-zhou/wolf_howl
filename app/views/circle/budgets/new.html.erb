@@ -1,5 +1,8 @@
-<h1>New budget</h1>
+<% if @activity.nil? %>
+	<h1>为圈子做预算</h1>
+<% else %>
+	<h1>为活动做预算</h1>
+<% end %>
 
 <%= render 'form' %>
 
-<%= link_to 'Back', budgets_path %>

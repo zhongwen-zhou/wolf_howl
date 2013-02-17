@@ -24,9 +24,16 @@ class Circle::AccountsController < Circle::ApplicationController
   # GET /accounts/new
   # GET /accounts/new.json
   def new
+    # @activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
+    # @activities = @current_user.activities
+    # @account = Account.new
+
+    
     @account = Account.new
-    @group = Group.find(params[:group_id])
-    @activity = Activity.find(params[:activity_id])
+    @group = Group.find(params[:group_id]) if params.has_key?(:group_id)
+    @budgets = @group.budgets
+    @activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
+    @activities = @group.activities
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @account }
