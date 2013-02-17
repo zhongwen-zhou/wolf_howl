@@ -5,9 +5,8 @@ class Circle::GroupsController < Circle::ApplicationController
   def index
     @groups = Group.all
     @group = Group.first
-
     @my_groups = @current_user.groups
-
+    return render 'circle/groups/guest/index' if @group.nil?
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @groups }
@@ -49,7 +48,7 @@ class Circle::GroupsController < Circle::ApplicationController
 
     respond_to do |format|
       if @group.valid?
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
+        format.html { redirect_to [:circle, @group], notice: 'Group was successfully created.' }
         format.json { render json: @group, status: :created, location: @group }
       else
         format.html { render action: "new" }

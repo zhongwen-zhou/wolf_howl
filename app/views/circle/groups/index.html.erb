@@ -15,7 +15,7 @@
             <% if @current_user.joined_group?(@group) %>
               <%= link_to '退出这个圈子!', "/groups/#{@group.id}/group_users/#{@current_user.joined_group(@group).id}", :method => :delete, data: { confirm: '你确定退出这个圈子么？' } %>
             <% else %>
-              <%= link_to '喜欢？加入这个圈子!', "/groups/#{@group.id}/group_users", :method => :post %>
+              <%= link_to '喜欢？加入这个圈子!', circle_group_group_users_path(@group), :method => :post %>
             <% end %>
       <% end %>
     </ul>
@@ -45,14 +45,21 @@
               <div class="tab-content">
                 <div class="tab-pane active" id="activities_<%= @group.id %>">
                   <% if @group.activities.empty? %>
-                    <%= link_to "没有活动，发起一个让大家来参与吧！", new_group_activity_path(@group) %>
+                    <%= link_to "没有活动，发起一个让大家来参与吧！", new_circle_group_activity_path(@group) %>
                   <% else %>
                     <% @group.activities.each do |active| %>
                       <div>
                         <%= active.subject %> / <%= link_to active.user.nick_name, user_path(active.user) %> / <%= active.start_date.strftime("%Y-%m-%d") %> -- <%= active.end_date.strftime("%Y-%m-%d") %>
-                        <%= link_to( " / 创建预算", new_circle_group_activity_budget_path(@group,active)) if @current_user.is_admin_group?(@group) %>
+                        <br />
+
+                        总预算：<%= active.total_budgets_sum %> / 目前支出：<%= active.total_accounts_sum %> / 当前余额：<%= active.balance_sum %> / 我应该支出：<%= active.personal_outcome_account(@current_user) %>
+
+                        <br />
+
+                        <%= link_to( "创建预算", new_circle_group_activity_budget_path(@group,active)) if @current_user.is_admin_group?(@group) %>
                         <%= link_to(" / 添加帐务",new_circle_group_activity_account_path(@group,active)) if @current_user.is_admin_group?(@group) %>
-                        <%= link_to(" / 参见活动",circle_group_activity_activity_users_path(@group,active), :method => :post) %>
+                        <%= link_to(" / 参见活动",circle_group_activity_activity_users_path(@group,active), :method => :post) if (!@current_user.joined_group?(@group) && !@current_user.is_create_group?(@group)) %>
+                        <%= link_to(" / 退出活动",circle_group_activity_activity_users_path(@group,active), :method => :post) if (@current_user.joined_group?(@group) && !@current_user.is_create_group?(@group)) %>
                       </div>
                     <% end %>
                     <% if @current_user.is_admin_group?(@group) %>
@@ -103,21 +110,21 @@
               <li>
                 <%= link_to member.nick_name, user_path(member) %>
                 <% if member.is_admin_group?(@group) %>
-                  / Admin
+                  / 管理员
                   <% if @current_user.is_create_group?(@group) %>
-                  / <%= link_to "取消管理员", "/groups/#{@group.id}/canel_admin/#{member.id}", :method => :put %>
+                  <%= link_to(" / 取消管理员", "/groups/#{@group.id}/canel_admin/#{member.id}", :method => :put) unless @current_user.is_create_group?(@group)%>
                   <% end %>
                 <% elsif @current_user.is_create_group?(@group) %>
                   / <%= link_to "设为管理员", "/groups/#{@group.id}/set_admin/#{member.id}", :method => :put %>
                 <% end %>
               </li>
+            <% end %>
           </ul>
         </div>
       </div>
     </div>
   </div>
 </div>
-<% end %>
 <script type="text/javascript">
   $(document).ready(function(){
     $('#group_tab').tab('show');

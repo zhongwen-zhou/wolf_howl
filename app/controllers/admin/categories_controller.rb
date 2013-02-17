@@ -4,23 +4,25 @@ class Admin::CategoriesController < Admin::ApplicationController
   def index
     @io_type = Category::IO_TYPE_INCOME
     @io_type = Category::IO_TYPE_OUTCOME if params[:io_type].to_i == Category::IO_TYPE_OUTCOME
-    Rails.logger.info("===IO_TYPE:#{@io_type}")
-    unless params.has_key?(:top_category_id)
-      parent = Category.income.top_categories.first if @io_type == Category::IO_TYPE_INCOME
-      Rails.logger.info("===P-X:#{@parent}")
-      parent = Category.outcome.top_categories.first if @io_type == Category::IO_TYPE_INCOME
-      Rails.logger.info("===P-A:#{@parent}")
-    else
-      parent = Category.find(params[:top_category_id].to_i)
-      Rails.logger.info("===P-B:#{@parent}")
+
+    if params.has_key?(:top_category_id)
+      @parent = Category.find(params[:top_category_id])
+      @io_type = @parent.io_type
     end
-    # @top_categories = Category.top_categories
-    # @current_parent_category = params.has_key?(:top_category_id) ? Category.find(params[:top_category_id]) : @top_categories.first
-    # @categories = @current_parent_category.children if @current_parent_category.present?#.page params[:page]
-    # @categories = Category.all#.page params[:page]
-    Rails.logger.info("===P:#{@parent}")
-    @categories = parent.children if parent.present?
-    Rails.logger.info("===C:#{@categories}")
+
+    if @io_type == Category::IO_TYPE_OUTCOME
+      @top_categories = Category.outcome.top_categories
+    else
+      @top_categories = Category.income.top_categories
+    end
+    @parent = @top_categories.first if @parent.nil?
+    # parent = Category.income.top_categories.first if @io_type == Category::IO_TYPE_INCOME
+    # parent = Category.outcome.top_categories.first if @io_type == Category::IO_TYPE_INCOME
+    # parent = Category.income.top_categories.first if parent.nil?
+
+    # @top_categories = parent.children
+
+    @categories = @parent.children if @parent.present?
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @categories }

@@ -42,20 +42,22 @@
                     <div class="tab-pane active" id="index_<%= @activity.id %>">
                             <div class="container span12">
                                 <div class="row-fluid">
-                                    <% if @activity.budgets.empty? %>
-                                      <%= link_to "策划一个新预算！", new_personal_user_activity_budget_path(@current_user,@activity) %>
+                                    <% if @activity.un_start? %>
+                                      总预算：<%= @activity.total_budgets_sum %> <br />
+                                      <%= link_to("策划一个新预算！", new_personal_user_activity_budget_path(@current_user,@activity)) %>
                                     <% else %>
-                                      总预算：<%= @activity.total_budgets_sum %>
-                                    <% end %>
+                                      活动已经开始或结束，不能增加预算
+                                    <% end %>                                    
                                 </div>
                                 <div class="row-fluid">
                                     <% if @activity.budgets.empty? %>
-                                          <% if @activity.running? %>
+                                          <% unless @activity.un_start? %>
                                             <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,@activity) %>
                                           <% else %>
-                                            活动不在进行状态中，不能记账哦！
+                                            活动还没有开始，不能记账哦！
                                           <% end %>
                                     <% else %>
+                                      总预算：<%= @activity.total_budgets_sum %> <br />
                                       目前支出：<%= @activity.total_accounts_sum %>
                                     <% end %>
                                 </div>
@@ -74,16 +76,20 @@
                                 </div>
                         <% end %>
                                 <div class="row-fluid">
-                                    <%= link_to("策划一个新预算！", new_personal_user_activity_budget_path(@current_user,@activity)) unless @activity.end? %>
+                                    <% if @activity.un_start? %>
+                                      <%= link_to("策划一个新预算！", new_personal_user_activity_budget_path(@current_user,@activity)) %>
+                                    <% else %>
+                                      活动已经开始或结束，不能增加预算
+                                    <% end %>
                                 </div>
                             </div>
                     </div>
                     <div class="tab-pane" id="accounts_<%= @activity.id %>">
                       <% if @activity.accounts.empty? %>
-                        <% if @activity.running? %>
+                        <% unless @activity.un_start? %>
                           <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,@activity) %>
                         <% else %>
-                          活动不在进行状态中，不能记账哦！
+                          活动还没有开始，不能记账哦！
                         <% end %>
                       <% else %>
                         <% @activity.accounts.each do |account| %>
@@ -93,7 +99,7 @@
                         <% if @activity.running? %>
                           <%= link_to "做好帐哦，来记一个吧！", new_personal_user_activity_account_path(@current_user,@activity) %>
                         <% else %>
-                          活动不在进行状态中，不能记账哦！
+                          活动还没有开始，不能记账哦！
                         <% end %>
 
                       <% end %>

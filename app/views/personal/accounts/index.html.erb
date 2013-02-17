@@ -91,7 +91,7 @@
               <tr>
                 <td><%= account.sum %></td>
                 <td><%= Account::IO_TYPE[account.io_type] %></td>
-                <td><%= account.genre_type %></td>
+                <td><%= account.genre_type_detail %></td>
                 <td><%= account.remark %></td>
                 <td><%= account.created_at.strftime("%Y-%m-%d") %></td>
                 <td><%= link_to '详情', personal_user_account_path(@current_user, account) %></td>

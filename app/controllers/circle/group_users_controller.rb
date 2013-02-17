@@ -45,7 +45,7 @@ class Circle::GroupUsersController < Circle::ApplicationController
     @group_user = @current_user.join_group(@group)
     respond_to do |format|
       if @group_user
-        format.html { redirect_to @group, notice: 'Group user was successfully created.' }
+        format.html { redirect_to [:circle, @group], notice: 'Group user was successfully created.' }
         format.json { render json: @group_user, status: :created, location: @group_user }
       else
         format.html { render action: "new" }

@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20130128090421) do
     t.integer  "invitees_id"
     t.boolean  "is_follow",   :default => false
     t.boolean  "is_admin",    :default => false
+    t.boolean  "is_creator",  :default => false
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
   end

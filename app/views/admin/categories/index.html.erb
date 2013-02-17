@@ -17,8 +17,8 @@
                 <%= link_to '支出', admin_categories_path(:io_type => Category::IO_TYPE_OUTCOME) %>
               </li>
             </ul>
-          <% Category.top_categories.each do |category| %>
-          <li class="<%= 'active' if @current_parent_category == category%>">
+          <% @top_categories.each do |category| %>
+          <li class="<%= 'active' if @parent == category %>">
             <%= link_to category.name, admin_categories_path(:top_category_id => category.id) %>
           </li>
           <% end %>

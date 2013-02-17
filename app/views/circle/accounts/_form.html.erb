@@ -1,4 +1,4 @@
-<%= form_for(@account) do |f| %>
+<%= form_for([:circle, @group, @activity, @account]) do |f| %>
   <% if @account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
@@ -12,12 +12,11 @@
   <% end %>
 
   <div class="field">
-    <%= f.label "金额" %><br />
+    <%= f.label :sum, "金额" %><br />
     <%= f.number_field :sum %>
   </div>
   <div class="field">
-    <%= f.label "收支类型" %><br />
-    <%= f.number_field :io_type %>
+    <%= f.hidden_field(:io_type, :value => Account::IO_TYPE_OUTCOME ) %>
   </div>
   <div class="field">
     <%= f.label "备注" %><br />

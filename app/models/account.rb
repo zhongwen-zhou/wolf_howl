@@ -4,7 +4,7 @@ class Account < ActiveRecord::Base
   paginates_per 11
   belongs_to :owner, :polymorphic => :true
   belongs_to :genre, :polymorphic => :true
-  belongs_to :activity
+  # belongs_to :activity
   validates :sum, :presence => { :message => "金额不能为空！"}
   IO_TYPE_INCOME = 0
   IO_TYPE_OUTCOME = 1
@@ -24,5 +24,14 @@ class Account < ActiveRecord::Base
   		categories_ids = category.children.map(&:id)
   		accounts = user.accounts.where(:created_at => start_date..end_date,:genre_type => 'Category', :genre_id => categories_ids).map(&:sum)
   	end
+  end
+
+  def genre_type_detail
+    if genre_type == 'Activity'
+      "活动/#{genre.subject}"      
+    elsif genre_type == 'Category'
+
+    end
+        
   end
 end

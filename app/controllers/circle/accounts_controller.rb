@@ -25,7 +25,8 @@ class Circle::AccountsController < Circle::ApplicationController
   # GET /accounts/new.json
   def new
     @account = Account.new
-
+    @group = Group.find(params[:group_id])
+    @activity = Activity.find(params[:activity_id])
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @account }
@@ -40,11 +41,12 @@ class Circle::AccountsController < Circle::ApplicationController
   # POST /accounts
   # POST /accounts.json
   def create
-    @account = Account.new(params[:account])
-
+      @group = Group.find(params[:group_id]) if params.has_key?(:group_id)
+      @activity = Activity.find(params[:activity_id]) if params.has_key?(:activity_id)
+      @account = @current_user.create_account(params[:account], @activity, @group)
     respond_to do |format|
-      if @account.save
-        format.html { redirect_to @account, notice: 'Account was successfully created.' }
+      if @account.valid?
+        format.html { redirect_to [:circle, @account], notice: 'Account was successfully created.' }
         format.json { render json: @account, status: :created, location: @account }
       else
         format.html { render action: "new" }

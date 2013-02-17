@@ -14,7 +14,7 @@ class Activity < ActiveRecord::Base
   STATUS_UN_START = 2
   STATUS = {STATUS_UN_START => "活动未开始", STATUS_RUNNING => "活动中", STATUS_END => "活动已结束"}
 
-VISABLE_STATUS_PUBLIC = 0
+  VISABLE_STATUS_PUBLIC = 0
   VISABLE_STATUS_FRIENDLY = 1
   VISABLE_STATUS_GROUP = 2
   VISABLE_STATUS_PRIVATE = 3
@@ -57,6 +57,14 @@ VISABLE_STATUS_PUBLIC = 0
 
   def un_start?
     self.status == STATUS_UN_START
+  end
+
+  def personal_outcome_account(user)
+    if self.owner_type == 'User'
+      total_accounts_sum
+    elsif self.owner_type == 'Group'
+      total_accounts_sum/owner.users.size
+    end
   end
 
   private

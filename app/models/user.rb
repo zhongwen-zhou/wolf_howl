@@ -22,9 +22,9 @@ class User < ActiveRecord::Base
   	return db_user if db_user.password == self.password
   end
 
-  def join_group(group, invite = nil, is_admin = false)
+  def join_group(group, invite = nil, is_admin = false, is_creater = false)
   	User.transaction do
-  		group_user = GroupUser.create({:user_id => self.id, :group_id => group.id, :invitees_id => invite, :is_admin => is_admin})
+  		group_user = GroupUser.create({:user_id => self.id, :group_id => group.id, :invitees_id => invite, :is_admin => is_admin, :is_creator => is_creater})
   		group.increment!(:member_count)
   	end
   end
@@ -93,18 +93,20 @@ class User < ActiveRecord::Base
     if group.present?
 
     else
-      params = params.merge({:genre => activity}) if activity.present?
+      params = params.merge({:genre => activity, :start_date => activity.start_date, :end_date => activity.end_date}) if activity.present?
       params = params.merge({:user_id => self.id})
       budget = self.budgets.create(params)
       return budget
     end
   end
 
-  def create_account(params, activity = nil, group =nil)
+  def create_account(params, activity = nil, group = nil)
     if group.present?
-
+      params = params.merge({:genre => activity, :visable_status => activity.visable_status, :io_type => Account::IO_TYPE_OUTCOME}) if activity.present?
+      params = params.merge({:user_id => self.id})
+      account = group.accounts.create(params)
     else
-      params = params.merge({:genre => activity, :visable_status => activity.visable_status}) if activity.present?
+      params = params.merge({:genre => activity, :visable_status => activity.visable_status, :io_type => Account::IO_TYPE_OUTCOME}) if activity.present?
       params = params.merge({:user_id => self.id})
       account = self.accounts.create(params)
     end
@@ -113,7 +115,7 @@ class User < ActiveRecord::Base
   def create_group(params)
     User.transaction do
       group = self.groups.create(params)
-      self.join_group(group,nil,true)
+      self.join_group(group,nil,true,true)
       return group
     end
   end
