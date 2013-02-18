@@ -67,6 +67,20 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def personal_outcome_total_account(user)
+    if self.owner_type == 'User'
+      total_accounts_sum
+    elsif self.owner_type == 'Group'
+      paid_sum = 0
+      self.accounts.where(:paid_user_id => user.id).each {|a| paid_sum += a.sum }
+      paid_sum
+    end
+  end  
+
+  def personal_outcome_should_account(user)
+    personal_outcome_account(user) - personal_outcome_total_account(user)
+  end
+
   private
   def check_status
     return STATUS_UN_START if Time.now < self.start_date

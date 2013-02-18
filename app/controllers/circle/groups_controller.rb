@@ -3,25 +3,16 @@ class Circle::GroupsController < Circle::ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.all
-    @group = Group.first
-    @my_groups = @current_user.groups
-    return render 'circle/groups/guest/index' if @group.nil?
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @groups }
-    end
+    @group = Group.last
+    @group = Group.where("id < #{params[:current_group_id]}").order('id desc').first if params[:index] == 'prev'
+    @group = Group.where("id > #{params[:current_group_id]}").order('id asc').first if params[:index] == 'next'
   end
 
   # GET /groups/1
   # GET /groups/1.json
   def show
     @group = Group.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @group }
-    end
+    return render 'index'
   end
 
   # GET /groups/new
@@ -48,7 +39,7 @@ class Circle::GroupsController < Circle::ApplicationController
 
     respond_to do |format|
       if @group.valid?
-        format.html { redirect_to [:circle, @group], notice: 'Group was successfully created.' }
+        format.html { redirect_to circle_groups_path, notice: 'Group was successfully created.' }
         format.json { render json: @group, status: :created, location: @group }
       else
         format.html { render action: "new" }

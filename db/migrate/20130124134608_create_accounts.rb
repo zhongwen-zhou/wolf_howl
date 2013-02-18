@@ -10,6 +10,7 @@ class CreateAccounts < ActiveRecord::Migration
       t.text :remark
       t.integer :visable_status, :null => false, :default => 0
       t.integer :user_id, :null => false
+      t.integer :paid_user_id, :null => false
 
       t.timestamps
     end

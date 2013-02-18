@@ -24,6 +24,18 @@
 
 <div class="container">
   <div class="row">
+        <div class="pagination pagination-small">
+          <ul>
+            <li>
+              <%= link_to_unless( @group.first?, '上一个', circle_groups_path(:index => 'prev',:current_group_id => @group.id )) %>
+            </li>
+            <li>
+              <%= link_to_unless( @group.last?, '下一个',circle_groups_path(:index => 'next',:current_group_id => @group.id)) %>
+            </li>
+          </ul>
+        </div>
+  </div>
+  <div class="row">
     <p>
     <%= @group.name %> / <%= link_to @group.user.nick_name, user_path(@group.user) %> <br/>
     圈子等级:<%= @group.level %>  成员数:<%= @group.member_count %>   粉丝数:<%= @group.following_count %>
@@ -55,13 +67,17 @@
                         总预算：<%= active.total_budgets_sum %> / 目前支出：<%= active.total_accounts_sum %> / 当前余额：<%= active.balance_sum %> 
                         <br />
                         我应该支出：<%= active.personal_outcome_account(@current_user) %>
+                        <br />
+                        我已经支出：<%= active.personal_outcome_total_account(@current_user) %> 
+                        <br />
+                        我还应该支付：<%= active.personal_outcome_should_account(@current_user)%>
 
                         <br />
 
                         <%= link_to( "创建预算", new_circle_group_activity_budget_path(@group,active)) if @current_user.is_admin_group?(@group) %>
                         <%= link_to(" / 添加帐务",new_circle_group_activity_account_path(@group,active)) if @current_user.is_admin_group?(@group) %>
                         <%= link_to(" / 参见活动",circle_group_activity_activity_users_path(@group,active), :method => :post) if (!@current_user.joind_activity?(active) && !@current_user.is_create_group?(@group)) %>
-                        <%= link_to(" / 退出活动",circle_group_activity_activity_users_path(@group,active), :method => :post) if (@current_user.joind_activity?(active) && !@current_user.is_create_group?(@group)) %>
+                        <%= link_to(" / 退出活动",circle_group_activity_activity_users_path(@group,active), :method => :delete, data: { confirm: '你确定退出该活动么？' }) if (@current_user.joind_activity?(active) && !@current_user.is_create_group?(@group)) %>
                       </div>
                     <% end %>
                     <% if @current_user.is_admin_group?(@group) %>

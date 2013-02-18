@@ -47,7 +47,7 @@ class Circle::ActivityUsersController < Circle::ApplicationController
 
     respond_to do |format|
       if @activity_user.valid?
-        format.html { redirect_to group_path, notice: 'Activity user was successfully created.' }
+        format.html { redirect_to circle_group_path(activity.owner), notice: 'Activity user was successfully created.' }
         format.json { render json: @activity_user, status: :created, location: @activity_user }
       else
         format.html { render action: "new" }

@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20130128090421) do
     t.text     "remark"
     t.integer  "visable_status", :default => 0, :null => false
     t.integer  "user_id",                       :null => false
+    t.integer  "paid_user_id",                  :null => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
@@ -43,13 +44,17 @@ ActiveRecord::Schema.define(:version => 20130128090421) do
   end
 
   create_table "activity_users", :force => true do |t|
-    t.integer  "activity_id",                :null => false
-    t.integer  "user_id",                    :null => false
+    t.integer  "activity_id",                           :null => false
+    t.integer  "user_id",                               :null => false
     t.integer  "invitees_id"
-    t.boolean  "is_admin"
-    t.integer  "status",      :default => 0, :null => false
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.boolean  "is_admin",           :default => false
+    t.integer  "status",             :default => 0,     :null => false
+    t.float    "last_paid_account"
+    t.float    "last_total_account"
+    t.datetime "last_joined_time"
+    t.datetime "last_left_time"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
   end
 
   create_table "budgets", :force => true do |t|
@@ -57,7 +62,7 @@ ActiveRecord::Schema.define(:version => 20130128090421) do
     t.text     "description"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.integer  "visable_status"
+    t.integer  "visable_status", :default => 0, :null => false
     t.integer  "status",         :default => 0, :null => false
     t.float    "total_sum"
     t.float    "balance_sum"
@@ -66,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20130128090421) do
     t.integer  "owner_id"
     t.string   "owner_type"
     t.integer  "user_id",                       :null => false
+    t.integer  "parent_id"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end

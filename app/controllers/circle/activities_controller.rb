@@ -41,21 +41,13 @@ class Circle::ActivitiesController < Circle::ApplicationController
   # POST /activities
   # POST /activities.json
   def create
-    if params.has_key?(:group_id)
-      group = Group.find(params[:group_id])
-      @activity =  group.create_activity(params[:activity].merge!({:user_id => @current_user.id}))
+    @group = Group.find(params[:group_id])
+    @activity =  @group.create_activity(params[:activity].merge!({:user_id => @current_user.id}))
+    @current_user.join_activity(@activity, nil, true) if @activity.valid?
+    if @activity.valid?
+      return render 'circle/groups/index'
     else
-      @activity = @current_user.create_activity(params[:activity])
-    end
-
-    respond_to do |format|
-      if @activity.errors.empty?
-        format.html { redirect_to groups_path, notice: 'Activity was successfully created.' }
-        format.json { render json: @activity, status: :created, location: @activity }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @activity.errors, status: :unprocessable_entity }
-      end
+      return render action: 'new'
     end
   end
 

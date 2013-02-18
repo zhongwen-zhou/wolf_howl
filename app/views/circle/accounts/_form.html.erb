@@ -43,6 +43,11 @@
       <%= f.hidden_field(:io_type,:vaule => Account::IO_TYPE_OUTCOME) %>
   <% end %>
 
+  <div class="field">
+    <%= f.label :paid_user_id, "付款人" %><br />
+    <%= select_tag "account[paid_user_id]", paid_user_option(@group,@activity).html_safe %>
+  </div>
+
 
 
   <div class="field">

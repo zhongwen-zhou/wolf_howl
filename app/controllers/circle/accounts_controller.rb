@@ -53,7 +53,7 @@ class Circle::AccountsController < Circle::ApplicationController
       @account = @current_user.create_account(params[:account], @activity, @group)
     respond_to do |format|
       if @account.valid?
-        format.html { redirect_to [:circle, @account], notice: 'Account was successfully created.' }
+        format.html { redirect_to circle_group_path(@group), notice: 'Account was successfully created.' }
         format.json { render json: @account, status: :created, location: @account }
       else
         format.html { render action: "new" }

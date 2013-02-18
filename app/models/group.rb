@@ -19,4 +19,12 @@ class Group < ActiveRecord::Base
     params = params.merge!({:genre => activity}) if activity.present?
     budget = self.budgets.create(params)
   end
+
+  def first?
+    Group.first == self
+  end
+
+  def last?
+    Group.last == self
+  end
 end

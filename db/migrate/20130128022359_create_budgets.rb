@@ -5,7 +5,7 @@ class CreateBudgets < ActiveRecord::Migration
       t.text :description
       t.datetime :start_date
       t.datetime :end_date
-      t.integer :visable_status
+      t.integer :visable_status, :null => false, :default => 0
       t.integer :status, :null => false, :default => 0
       t.float :total_sum
       t.float :balance_sum
@@ -14,6 +14,7 @@ class CreateBudgets < ActiveRecord::Migration
       t.integer :owner_id
       t.string :owner_type
       t.integer :user_id, :null => false
+      t.integer :parent_id
 
       t.timestamps
     end
