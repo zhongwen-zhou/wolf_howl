@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128090421) do
+ActiveRecord::Schema.define(:version => 20130313084232) do
 
   create_table "accounts", :force => true do |t|
     t.float    "sum",                           :null => false
@@ -112,6 +112,18 @@ ActiveRecord::Schema.define(:version => 20130128090421) do
     t.integer  "visable_status",  :default => 0, :null => false
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
+  end
+
+  create_table "images", :force => true do |t|
+    t.string   "file_name"
+    t.string   "content_type"
+    t.string   "file_size"
+    t.string   "imageable_type"
+    t.integer  "imageable_id"
+    t.integer  "user_id"
+    t.integer  "state"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "users", :force => true do |t|

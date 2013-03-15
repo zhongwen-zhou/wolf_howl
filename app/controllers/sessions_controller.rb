@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
   end
 
   def create
+    Rails.logger.info("====params:#{params[:user]}")
   	user = User.new(params[:user])
   	@user = user.authorize_user
     if @user.present?

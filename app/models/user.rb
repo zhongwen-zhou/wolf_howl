@@ -1,6 +1,6 @@
 #encoding: utf-8
 class User < ActiveRecord::Base
-  attr_accessible :access_token, :brief_introduction, :current_sign_in_at, :current_sign_in_ip, :email, :follower_count, :following_count, :group_count, :last_sign_in_at, :last_sign_in_ip, :nick_name, :password, :sign_in_count, :status, :token_updated_at, :permission, :password_confirmation, :is_remember
+  attr_accessible :access_token, :brief_introduction, :current_sign_in_at, :current_sign_in_ip, :email, :follower_count, :following_count, :group_count, :last_sign_in_at, :last_sign_in_ip, :nick_name, :password, :sign_in_count, :status, :token_updated_at, :permission, :password_confirmation, :is_remember, :images, :image
   validates :email, :nick_name, :password, :presence => { :message => "不能为空！"}
   validates :password, :confirmation => true
   validates :password_confirmation, :presence => true
@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :accounts, :as => :owner, :dependent => :destroy
   has_many :activities, :as => :owner, :dependent => :destroy
   has_many :budgets, :as => :owner, :dependent => :destroy
+  has_many :images, :as => :imageable
 
 
   ADMIN_PERMISSION = 99
